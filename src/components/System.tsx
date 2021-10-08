@@ -1,9 +1,9 @@
 import { Box, styled } from '@mui/material';
-import systems from '../data/systems.json';
-import { ISystem } from '../interfaces/system.interface';
+import { systemService } from '../services/system.service';
 
 type Props = {
-  system: string;
+  systemId: string;
+  onDoubleClick: () => void;
 }
 
 const StyledBox = styled(Box)`
@@ -41,19 +41,19 @@ const StyledBox = styled(Box)`
   }
 `;
 
-export const System = ({ system: id }: Props) => {
-  const system = (systems as ISystem[]).find(system => system.id === id);
+export const System = ({ systemId, onDoubleClick }: Props) => {
+  const system = systemService.get(systemId);
 
   return (
-    <StyledBox>
+    <StyledBox onDoubleClick={onDoubleClick}>
       <div>
         <img
-          src={`${process.env.PUBLIC_URL}/systems/icons/${system?.icon || 'missing.png'}`}
-          alt={system?.name || id}
+          src={`${process.env.PUBLIC_URL}/systems/icons/${system.icon || 'missing.png'}`}
+          alt={system.name}
         />
       </div>
       <p>
-        { system?.name || id }
+        { system.name }
       </p>
     </StyledBox>
   )
