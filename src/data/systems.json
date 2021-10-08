@@ -1,0 +1,486 @@
+[
+  {
+    "id": "amiga",
+    "name": "Amiga",
+    "picture": "Amiga.png",
+    "section": "computers"
+  },
+  {
+    "id": "amstradcpc",
+    "name": "Amstrad CPC",
+    "picture": "Amstrad CPC.png",
+    "section": "computers"
+  },
+  {
+    "id": "apple2",
+    "name": "Apple 2",
+    "picture": "Apple 2.png",
+    "section": "computers"
+  },
+  {
+    "id": "atari2600",
+    "name": "Atari 2600",
+    "picture": "Atari 2600.png",
+    "icon": "atari2600.png",
+    "section": "consoles"
+  },
+  {
+    "id": "atari5200",
+    "name": "Atari 5200",
+    "picture": "Atari 5200.png",
+    "icon": "atari5200.png",
+    "section": "consoles"
+  },
+  {
+    "id": "atari7800",
+    "name": "Atari 7800",
+    "picture": "Atari 7800.png",
+    "icon": "atari7800.png",
+    "section": "consoles"
+  },
+  {
+    "id": "atari800",
+    "name": "Atari 8-bit Series",
+    "picture": "Atari 800.png",
+    "section": "computers"
+  },
+  {
+    "id": "atarijaguar",
+    "name": "Atari Jaguar",
+    "picture": "Atari Jaguar.png",
+    "section": "consoles"
+  },
+  {
+    "id": "lynx",
+    "name": "Atari Lynx",
+    "picture": "Atari Lynx.png",
+    "icon": "lynx.png",
+    "section": "handhelds"
+  },
+  {
+    "id": "atarist",
+    "name": "Atari ST",
+    "picture": "Atari ST.png",
+    "section": "computers"
+  },
+  {
+    "id": "coleco",
+    "name": "Colecovision",
+    "picture": "Colecovision.png",
+    "icon": "colecovision.png",
+    "section": "consoles"
+  },
+  {
+    "id": "c64",
+    "name": "Commodore 64",
+    "picture": "Commodore 64.png",
+    "icon": "c64.png",
+    "section": "computers"
+  },
+  {
+    "id": "pc",
+    "name": "DOSBox",
+    "picture": "DOSBox.png",
+    "section": "others"
+  },
+  {
+    "id": "daphne",
+    "name": "Daphne",
+    "picture": "LaserActive.png",
+    "section": "others"
+  },
+  {
+    "id": "dragon32",
+    "name": "Dragon 32",
+    "picture": "Dragon 32.png",
+    "section": "computers"
+  },
+  {
+    "id": "dreamcast",
+    "name": "Dreamcast",
+    "picture": "Dreamcast.png",
+    "section": "consoles"
+  },
+  {
+    "id": "fba",
+    "name": "FBA",
+    "picture": "Final Burn Alpha.png",
+    "pictures": [
+      "Final Burn Alpha.png",
+      "Neo Geo MVS.png"
+    ],
+    "section": "arcades"
+  },
+  {
+    "id": "gw",
+    "name": "Game & Watch",
+    "picture": "Game & Watch.png",
+    "section": "handhelds"
+  },
+  {
+    "id": "gb",
+    "name": "Game Boy",
+    "picture": "Game Boy.png",
+    "pictures": [
+      "Game Boy Pocket.png",
+      "Game Boy.png"
+    ],
+    "icon": "gameboy.png",
+    "section": "handhelds"
+  },
+  {
+    "id": "gba",
+    "name": "Game Boy Advance",
+    "picture": "Game Boy Advance.png",
+    "icon": "gba.png",
+    "section": "handhelds"
+  },
+  {
+    "id": "gbc",
+    "name": "Game Boy Color",
+    "picture": "Game Boy Color.png",
+    "section": "handhelds"
+  },
+  {
+    "id": "gamegear",
+    "name": "Game Gear",
+    "picture": "Game Gear.png",
+    "icon": "gamegear.png",
+    "section": "handhelds"
+  },
+  {
+    "id": "gc",
+    "name": "GameCube",
+    "picture": "GameCube.png",
+    "icon": "gamecube.png",
+    "section": "consoles"
+  },
+  {
+    "id": "intellivision",
+    "name": "Intellivision",
+    "picture": "Intellivision.png",
+    "icon": "intellivision.png",
+    "section": "consoles"
+  },
+  {
+    "id": "lutro",
+    "name": "LUA games",
+    "picture": "Lua.png",
+    "section": "others"
+  },
+  {
+    "id": "mame-advmame",
+    "name": "MAME AdvanceMAME",
+    "picture": "AdvanceMAME.png",
+    "section": "arcades"
+  },
+  {
+    "id": "mame-libretro",
+    "name": "MAME Libretro",
+    "picture": "MAME.png",
+    "section": "arcades"
+  },
+  {
+    "id": "mame-mame4all",
+    "name": "MAME MAME4all",
+    "picture": "MAME.png",
+    "section": "arcades"
+  },
+  {
+    "id": "msx",
+    "name": "MSX",
+    "picture": "Sony HitBit (MSX 1).png",
+    "pictures": [
+      "Sony HitBit (MSX 1).png",
+      "Philips VG 8235 (MSX 2).png"
+    ],
+    "section": "computers"
+  },
+  {
+    "id": "macintosh",
+    "name": "Macintosh",
+    "picture": "Macintosh.png",
+    "section": "computers"
+  },
+  {
+    "id": "mame",
+    "name": "Mame",
+    "picture": "MAME.png",
+    "section": "arcades"
+  },
+  {
+    "id": "megadrive",
+    "name": "Megadrive",
+    "alias": "Genesis",
+    "picture": "Megadrive.png",
+    "pictures": [
+      "Genesis.png",
+      "Megadrive.png"
+    ],
+    "icon": "megadrive.png",
+    "icons": ["megadrive.png", "genesis.png"],
+    "section": "consoles"
+  },
+  {
+    "id": "neogeo",
+    "name": "Neo Geo",
+    "picture": "Neo Geo.png",
+    "section": "consoles"
+  },
+  {
+    "id": "ngpc",
+    "name": "Neo Geo Pocket Color",
+    "picture": "Neo Geo Pocket Color.png",
+    "section": "handhelds"
+  },
+  {
+    "id": "ngp",
+    "name": "NeoGeo Pocket",
+    "picture": "Neo Geo Pocket.png",
+    "icon": "neogeopocket.png",
+    "section": "handhelds"
+  },
+  {
+    "id": "n64",
+    "name": "Nintendo 64",
+    "picture": "Nintendo 64.png",
+    "icon": "n64.png",
+    "section": "consoles"
+  },
+  {
+    "id": "nds",
+    "name": "Nintendo DS",
+    "picture": "Nintendo DS.png",
+    "icon": "nds.png",
+    "section": "handhelds"
+  },
+  {
+    "id": "nes",
+    "name": "Nintendo Entertainment System",
+    "picture": "Nintendo Entertainment System.png",
+    "icon": "nes.png",
+    "section": "consoles"
+  },
+  {
+    "id": "fds",
+    "name": "Nintendo Family Computer Disk System",
+    "picture": "Nintendo Family Computer.png",
+    "pictures": [
+      "Nintendo Family Computer.png",
+      "Nintendo Family Computer - Famicom Disk System.png"
+    ],
+    "icon": "famicom.png",
+    "section": "consoles"
+  },
+  {
+    "id": "virtualboy",
+    "name": "Nintendo Virtual Boy",
+    "picture": "Nintendo Virtual-Boy.png",
+    "icon": "vb.png",
+    "section": "others"
+  },
+  {
+    "id": "o2em",
+    "name": "Odyssey 2",
+    "picture": "Odyssey 2.png",
+    "icon": "odyssey2.png",
+    "section": "consoles"
+  },
+  {
+    "id": "oric",
+    "name": "Oric 1 / Atmos",
+    "picture": "Oric Atmos.png",
+    "section": "computers"
+  },
+  {
+    "id": "pcfx",
+    "name": "PC-FX",
+    "section": "consoles",
+    "picture": "PC-FX.png",
+    "icon": "pcfx.png"
+  },
+  {
+    "id": "pcengine",
+    "name": "PC Engine / TurboGrafx 16",
+    "picture": "PC Engine.png",
+    "pictures": [
+      "PC Engine.png",
+      "TurboGrafx 16.png"
+    ],
+    "icon": "pcengine.png",
+    "icons": ["pcengine.png", "tg16.png"],
+    "section": "consoles"
+  },
+  {
+    "id": "pcenginecd",
+    "name": "PC Engine CD",
+    "picture": "PC Engine Super CDRom2.png",
+    "icon": "pcenginecd.png",
+    "icons": ["pcenginecd.png", "tgcd.png"],
+    "section": "consoles"
+  },
+  {
+    "id": "psp",
+    "name": "PSP",
+    "picture": "PlayStation Portable.png",
+    "icon": "psp.png",
+    "section": "handhelds"
+  },
+  {
+    "id": "3do",
+    "name": "Panasonic 3do",
+    "picture": "Panasonic 3do.png",
+    "icon": "3do.png",
+    "section": "consoles"
+  },
+  {
+    "id": "psx",
+    "name": "PlayStation",
+    "picture": "PlayStation.png",
+    "icon": "psx.png",
+    "section": "consoles"
+  },
+  {
+    "id": "ps2",
+    "name": "PlayStation 2",
+    "picture": "PlayStation 2.png",
+    "section": "consoles"
+  },
+  {
+    "id": "saturn",
+    "name": "Sega Saturn",
+    "picture": "Sega Saturn.png",
+    "icon": "saturn.png",
+    "section": "consoles"
+  },
+  {
+    "id": "samcoupe",
+    "name": "SAM Coupé",
+    "picture": "SAM Coupé.png",
+    "section": "computers"
+  },
+  {
+    "id": "scummvm",
+    "name": "ScummVM",
+    "picture": "ScummVM.png",
+    "section": "others"
+  },
+  {
+    "id": "sega32x",
+    "name": "Sega 32x",
+    "picture": "Sega Genesis Model2 32X.png",
+    "icon": "32x_eu.png",
+    "icons": ["32x_eu.png", "32x_jp.png", "32x_na.png"],
+    "section": "consoles"
+  },
+  {
+    "id": "segacd",
+    "name": "Sega CD",
+    "picture": "Sega CD.png",
+    "icon": "segacd.png",
+    "section": "consoles"
+  },
+  {
+    "id": "mastersystem",
+    "name": "Sega Master System",
+    "picture": "Sega Master System 2.png",
+    "pictures": [
+      "Sega Master System.png",
+      "Sega Master System 2.png",
+      "Sega Mark III.png"
+    ],
+    "icon": "sms.png",
+    "section": "consoles"
+  },
+  {
+    "id": "sg-1000",
+    "name": "Sega SG-1000",
+    "picture": "Sega SG-1000.png",
+    "icon": "sg1000.png",
+    "section": "consoles"
+  },
+  {
+    "id": "zxspectrum",
+    "name": "Sinclair ZX Spectrum",
+    "picture": "Sinclair ZX Spectrum.png",
+    "section": "computers"
+  },
+  {
+    "id": "zx81",
+    "name": "Sinclair ZX81",
+    "picture": "Sinclair ZX81.png",
+    "section": "computers"
+  },
+  {
+    "id": "snes",
+    "name": "Super Nintendo Entertainment System",
+    "picture": "Super Nintendo Entertainment System.png",
+    "icon": "snes_eujap.png",
+    "icons": ["snes_eujap.png", "snes_usa.png"],
+    "section": "consoles"
+  },
+  {
+    "id": "supergrafx",
+    "name": "SuperGrafX",
+    "picture": "SuperGrafX.png",
+    "icon": "supergrafx.png",
+    "section": "consoles"
+  },
+  {
+    "id": "ti99",
+    "name": "TI-99/4A",
+    "picture": "TI-99:4A.png",
+    "section": "computers"
+  },
+  {
+    "id": "trs-80",
+    "name": "TRS-80",
+    "picture": "TRS-80 Model 3.png",
+    "section": "computers"
+  },
+  {
+    "id": "coco",
+    "name": "Tandy Color Computer",
+    "picture": "Tandy Color Computer.png",
+    "section": "computers"
+  },
+  {
+    "id": "vectrex",
+    "name": "Vectrex",
+    "picture": "Vectrex.png",
+    "icon": "vectrex.png",
+    "section": "consoles"
+  },
+  {
+    "id": "videopac",
+    "name": "Videopac",
+    "picture": "Philips Videopac G7400.png",
+    "section": "consoles"
+  },
+  {
+    "id": "wii",
+    "name": "Wii",
+    "picture": "Wii.png",
+    "icon": "wii.png",
+    "section": "handhelds"
+  },
+  {
+    "id": "wonderswan",
+    "name": "Wonder Swan",
+    "picture": "Bandai Wonder Swan.png",
+    "icon": "wonderswan.png",
+    "section": "handhelds"
+  },
+  {
+    "id": "wonderswancolor",
+    "name": "Wonder Swan Color",
+    "picture": "Bandai Wonder Swan Color.png",
+    "section": "handhelds"
+  },
+  {
+    "id": "zmachine",
+    "name": "Zmachine (Infocom)",
+    "picture": "Infocom.png",
+    "section": "others"
+  }
+]

@@ -2,6 +2,10 @@
 
 WIP
 
+## Credits
+
+Consoles Icons from [OpenEmu](https://openemu.org/)
+
 ## Licence
 
 <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/">
