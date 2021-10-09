@@ -3,12 +3,11 @@ import { Win } from './Win/Win';
 
 type Props = {
   systemId: string;
-  onCloseClick: () => void
 }
 
-export const SystemWindow = ({ systemId, onCloseClick }: Props) => {
+export const SystemWindow = ({ systemId }: Props) => {
   const system = systemService.get(systemId);
   return (
-    <Win title={system.name} onCloseClick={onCloseClick} />
+    <Win title={system.name} />
   )
 };

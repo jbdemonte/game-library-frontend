@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react';
 import { Alert, Box, CircularProgress, Grid, Snackbar } from '@mui/material';
 import { systemService, SystemStatus } from '../services/system.service';
 import { System } from './System';
+import { WinManager } from './Win/WinManager';
 import { SystemWindow } from './SystemWindow';
-
-let windowId = 0;
+import { guid } from '../tools/guid';
 
 export const Desktop = () => {
   const [statuses, setStatuses] = useState<SystemStatus[]>();
   const [error, setError] = useState<Error>();
   const [loading, setLoading] = useState(true);
-  const [windows, setWindows] = useState<Array<{id: number, system: string }>>([]);
+  const [descriptors, setDescriptors] = useState<Array<{id: string, system: string }>>([]);
 
   useEffect(() => {
     systemService
@@ -21,11 +21,7 @@ export const Desktop = () => {
   }, []);
 
   function openSystem(system: string) {
-    setWindows(items => [...items, { id: ++windowId, system }]);
-  }
-
-  function closeSystem(windowId: number) {
-    setWindows(items => items.filter(win => win.id !== windowId));
+    setDescriptors(items => [...items, { id: guid(), system }]);
   }
 
   return (
@@ -42,10 +38,7 @@ export const Desktop = () => {
         </Grid>
       ) }
 
-      <Box sx={{ position: 'absolute', inset: 0, backgroundColor: 'transparent', pointerEvents: 'none'}}>
-        { windows.map(win => <SystemWindow key={win.id} systemId={win.system } onCloseClick={() => closeSystem(win.id)} />) }
-      </Box>
-
+      <WinManager descriptors={descriptors} update={setDescriptors} render={descriptor => <SystemWindow systemId={descriptor.system } />} />
 
       <Snackbar open={Boolean(error)} autoHideDuration={6000} anchorOrigin={{ vertical: 'top', horizontal: 'right'}} onClose={() => setError(undefined)}>
         <Alert onClose={() => setError(undefined)} severity="error" sx={{ width: '100%' }}>

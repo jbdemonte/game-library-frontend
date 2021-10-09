@@ -1,14 +1,14 @@
-import { FC, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import { Box, styled } from '@mui/material';
 import { useOnDrag } from '../../hooks/use-on-drag';
 import { useOnResize } from '../../hooks/use-on-resize';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Content } from './components/Content';
+import { WindowContext } from '../../contexts/window.context';
 
 type Props = {
   title: string;
-  onCloseClick: () => void
 }
 
 const Window = styled(Box)`
@@ -21,7 +21,8 @@ const Window = styled(Box)`
   flex-direction: column;
 `;
 
-export const Win: FC<Props> = ({ title, onCloseClick }) => {
+export const Win: FC<Props> = ({ title }) => {
+  const { close } = useContext(WindowContext);
   const [resizing, setResizing] = useState(false);
   const [{ top, left, width, height, cursor, fullscreen }, setProperties] = useState(() => {
     const height = window.innerHeight / 2;
@@ -56,7 +57,7 @@ export const Win: FC<Props> = ({ title, onCloseClick }) => {
       <Header
         fullscreen={fullscreen}
         onDoubleClick={toggleFullScreen}
-        onCloseClick={onCloseClick}
+        onCloseClick={close}
         onFullScreenClick={toggleFullScreen}
         {...useOnDrag({ draggable: !fullscreen && !resizing, onDragMove: (e) => setProperties(props => ({ ...props, top: props.top + e.movementY, left: props.left + e.movementX }))})}
       >
