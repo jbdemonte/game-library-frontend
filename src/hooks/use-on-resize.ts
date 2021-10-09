@@ -4,12 +4,13 @@ import { useEffectOnUpdate } from './use-effect-on-update';
 
 type Props = {
   onCursorChange: (cursor: string) => void;
+  onPointerDown?: (e: React.PointerEvent<HTMLElement>) => void;
   onResize: (offset: { top: number, left: number, bottom: number, right: number }) => void;
   onChange: (resizing: boolean) => void;
   resizable?: boolean;
 }
 
-export const useOnResize = ({ onCursorChange, onResize, onChange, resizable }: Props) => {
+export const useOnResize = ({ onCursorChange, onResize, onChange, resizable, onPointerDown: onPointerDownParent }: Props) => {
   const [, setCursor] = useState('auto');
   const [{ top, left, bottom, right, resizing }, setResizing] = useState({ top: false, left: false, bottom: false, right: false, resizing: false });
 
@@ -59,10 +60,13 @@ export const useOnResize = ({ onCursorChange, onResize, onChange, resizable }: P
       if (top || left || bottom || right) {
         setResizing({ top, left, bottom, right, resizing: true });
       }
+      if (onPointerDownParent) {
+        onPointerDownParent(e);
+      }
     };
 
     return resizable ? { onPointerMove, onPointerDown } : {};
-  }, [onCursorChange, resizable]);
+  }, [onCursorChange, resizable, onPointerDownParent]);
 }
 
 function getActiveSides(e: React.PointerEvent<HTMLElement>) {

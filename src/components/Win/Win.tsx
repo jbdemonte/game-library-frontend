@@ -22,7 +22,7 @@ const Window = styled(Box)`
 `;
 
 export const Win: FC<Props> = ({ title }) => {
-  const { close } = useContext(WindowContext);
+  const { descriptor, close, focus } = useContext(WindowContext);
   const [resizing, setResizing] = useState(false);
   const [{ top, left, width, height, cursor, fullscreen }, setProperties] = useState(() => {
     const height = window.innerHeight / 2;
@@ -53,7 +53,16 @@ export const Win: FC<Props> = ({ title }) => {
   };
 
   return (
-    <Window sx={ fullscreen ? { inset: 5 } : { top, left, width, height, cursor }} {...useOnResize({ onCursorChange, onResize, onChange: setResizing, resizable: !fullscreen })}>
+    <Window
+      sx={ fullscreen ? { inset: 5, zIndex: descriptor.pos } : { top, left, width, height, cursor, zIndex: descriptor.pos }}
+      {...useOnResize({
+        onCursorChange,
+        onResize,
+        onChange: setResizing,
+        resizable: !fullscreen,
+        onPointerDown: () => focus(),
+      })}
+    >
       <Header
         fullscreen={fullscreen}
         onDoubleClick={toggleFullScreen}

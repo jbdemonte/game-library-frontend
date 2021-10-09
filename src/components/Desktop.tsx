@@ -2,15 +2,19 @@ import { useEffect, useState } from 'react';
 import { Alert, Box, CircularProgress, Grid, Snackbar } from '@mui/material';
 import { systemService, SystemStatus } from '../services/system.service';
 import { System } from './System';
-import { WinManager } from './Win/WinManager';
+import { IBaseDescriptor, WinManager } from './Win/WinManager';
 import { SystemWindow } from './SystemWindow';
 import { guid } from '../tools/guid';
+
+interface ISystemDescriptor extends IBaseDescriptor {
+  system: string;
+}
 
 export const Desktop = () => {
   const [statuses, setStatuses] = useState<SystemStatus[]>();
   const [error, setError] = useState<Error>();
   const [loading, setLoading] = useState(true);
-  const [descriptors, setDescriptors] = useState<Array<{id: string, system: string }>>([]);
+  const [descriptors, setDescriptors] = useState<ISystemDescriptor[]>([]);
 
   useEffect(() => {
     systemService
@@ -21,7 +25,8 @@ export const Desktop = () => {
   }, []);
 
   function openSystem(system: string) {
-    setDescriptors(items => [...items, { id: guid(), system }]);
+    const pos = 1 + descriptors.reduce((max, descriptor) => Math.max(descriptor.pos, max), 0);
+    setDescriptors(items => [...items, { id: guid(), pos, system }]);
   }
 
   return (
