@@ -43,7 +43,7 @@ export const Desktop = () => {
       ) }
 
       <Box sx={{ position: 'absolute', inset: 0, backgroundColor: 'transparent', pointerEvents: 'none'}}>
-        { windows.map(win => <SystemWindow key={win.id} systemId={win.system } close={() => closeSystem(win.id)} />) }
+        { windows.map(win => <SystemWindow key={win.id} systemId={win.system } onCloseClick={() => closeSystem(win.id)} />) }
       </Box>
 
 
