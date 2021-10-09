@@ -1,5 +1,5 @@
 import React, { PointerEventHandler, useMemo, useState, useEffect } from 'react';
-
+import { useEffectOnUpdate } from './use-effect-on-update';
 
 
 type Props = {
@@ -11,6 +11,10 @@ type Props = {
 export const useOnResize = ({ onCursorChange, onResize, onChange }: Props) => {
   const [, setCursor] = useState('auto');
   const [{ top, left, bottom, right, resizing }, setResizing] = useState({ top: false, left: false, bottom: false, right: false, resizing: false });
+
+  useEffectOnUpdate(() => {
+    onChange(resizing)
+  }, [resizing]);
 
   useEffect(() => {
     function onPointerMove(e: PointerEvent) {
@@ -25,12 +29,7 @@ export const useOnResize = ({ onCursorChange, onResize, onChange }: Props) => {
       }
     }
     function onPointerUp() {
-      setResizing(previous => {
-        if (previous.resizing) {
-          onChange(false);
-        }
-        return { top: false, left: false, bottom: false, right: false, resizing: false };
-      });
+      setResizing({ top: false, left: false, bottom: false, right: false, resizing: false });
     }
     window.addEventListener('pointermove', onPointerMove);
     window.addEventListener('pointerup', onPointerUp);
@@ -39,7 +38,7 @@ export const useOnResize = ({ onCursorChange, onResize, onChange }: Props) => {
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
     };
-  }, [resizing, top, left, bottom, right, onChange, onResize]);
+  }, [resizing, top, left, bottom, right, onResize]);
 
   return useMemo(() => {
     const onPointerMove: PointerEventHandler<HTMLElement> = (e: React.PointerEvent<HTMLElement>) => {
@@ -58,7 +57,6 @@ export const useOnResize = ({ onCursorChange, onResize, onChange }: Props) => {
       const { top, left, bottom, right } = getActiveSides(e);
       if (top || left || bottom || right) {
         setResizing({ top, left, bottom, right, resizing: true });
-        onChange(true);
       }
     };
 
@@ -66,7 +64,7 @@ export const useOnResize = ({ onCursorChange, onResize, onChange }: Props) => {
       onPointerMove,
       onPointerDown,
     }
-  }, [onCursorChange, onChange]);
+  }, [onCursorChange]);
 }
 
 function getActiveSides(e: React.PointerEvent<HTMLElement>) {
