@@ -6,9 +6,10 @@ type Props = {
   onCursorChange: (cursor: string) => void;
   onResize: (offset: { top: number, left: number, bottom: number, right: number }) => void;
   onChange: (resizing: boolean) => void;
+  resizable?: boolean;
 }
 
-export const useOnResize = ({ onCursorChange, onResize, onChange }: Props) => {
+export const useOnResize = ({ onCursorChange, onResize, onChange, resizable }: Props) => {
   const [, setCursor] = useState('auto');
   const [{ top, left, bottom, right, resizing }, setResizing] = useState({ top: false, left: false, bottom: false, right: false, resizing: false });
 
@@ -18,7 +19,7 @@ export const useOnResize = ({ onCursorChange, onResize, onChange }: Props) => {
 
   useEffect(() => {
     function onPointerMove(e: PointerEvent) {
-      if (resizing) {
+      if (resizing && resizable) {
         onResize({
           top: top ? e.movementY : 0,
           left: left ? e.movementX : 0,
@@ -38,7 +39,7 @@ export const useOnResize = ({ onCursorChange, onResize, onChange }: Props) => {
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
     };
-  }, [resizing, top, left, bottom, right, onResize]);
+  }, [resizing, top, left, bottom, right, onResize, resizable]);
 
   return useMemo(() => {
     const onPointerMove: PointerEventHandler<HTMLElement> = (e: React.PointerEvent<HTMLElement>) => {
@@ -60,11 +61,8 @@ export const useOnResize = ({ onCursorChange, onResize, onChange }: Props) => {
       }
     };
 
-    return {
-      onPointerMove,
-      onPointerDown,
-    }
-  }, [onCursorChange]);
+    return resizable ? { onPointerMove, onPointerDown } : {};
+  }, [onCursorChange, resizable]);
 }
 
 function getActiveSides(e: React.PointerEvent<HTMLElement>) {

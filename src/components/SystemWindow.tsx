@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Box, styled, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
+import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
+import { SvgIconTypeMap } from '@mui/material/SvgIcon/SvgIcon';
 import { systemService } from '../services/system.service';
 import { useOnDrag } from '../hooks/use-on-drag';
 import { useOnResize } from '../hooks/use-on-resize';
@@ -45,6 +49,7 @@ const Footer = styled(Box)`
 const Part = styled(Box)`
   display: flex;
   align-items: center;
+  gap: 10px;
 `;
 
 const Space = styled(Part)`
@@ -66,9 +71,30 @@ const CloseButton = styled(CloseIcon)`
   }
 `;
 
+function fullscreenStyled(icon: OverridableComponent<SvgIconTypeMap>) {
+  return styled(icon)`
+  color: #28c941;
+  background: #28c941;
+  border-radius: 100px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  border: 1px solid #28c941;
+  padding: 1px;
+
+  &:hover {
+    color: #046201;
+    border-color: #13aa27;
+  }
+`;
+}
+
+const FullscreenButton = fullscreenStyled(OpenInFullIcon);
+const CloseFullscreenButton = fullscreenStyled(CloseFullscreenIcon);
+
 export const SystemWindow = ({ systemId, close }: Props) => {
   const [resizing, setResizing] = useState(false);
-  const [{ top, left, width, height, cursor }, setProperties] = useState(() => {
+  const [{ top, left, width, height, cursor, fullscreen }, setProperties] = useState(() => {
     const height = window.innerHeight / 2;
     const width = window.innerWidth / 1.5;
     return {
@@ -76,7 +102,8 @@ export const SystemWindow = ({ systemId, close }: Props) => {
     height,
     top: Math.floor((window.innerHeight - height) / 2),
     left: Math.floor((window.innerWidth - width) / 2),
-    cursor: 'auto'
+    cursor: 'auto',
+    fullscreen: false
   }});
 
   const system = systemService.get(systemId);
@@ -93,12 +120,20 @@ export const SystemWindow = ({ systemId, close }: Props) => {
     }))
   };
 
+  const toggleFullScreen = () => {
+    setProperties(props => ({ ...props, fullscreen: !props.fullscreen }));
+  };
+
   return (
-    <Window sx={{ top, left, width, height, cursor }} {...useOnResize({ onCursorChange, onResize, onChange: setResizing })}>
-      <Header {...useOnDrag({ draggable: !resizing, onDragMove: (e) => setProperties(props => ({ ...props, top: props.top + e.movementY, left: props.left + e.movementX }))})}>
+    <Window sx={ fullscreen ? { inset: 5 } : { top, left, width, height, cursor }} {...useOnResize({ onCursorChange, onResize, onChange: setResizing, resizable: !fullscreen })}>
+      <Header onDoubleClick={toggleFullScreen} {...useOnDrag({ draggable: !fullscreen && !resizing, onDragMove: (e) => setProperties(props => ({ ...props, top: props.top + e.movementY, left: props.left + e.movementX }))})}>
         <Part><Typography sx={{ fontSize: 14, userSelect: 'none'}}>{system.name}</Typography></Part>
         <Space />
-        <Part><CloseButton onClick={close} /></Part>
+        <Part>
+          { !fullscreen && <FullscreenButton onClick={toggleFullScreen}/> }
+          { fullscreen && <CloseFullscreenButton onClick={toggleFullScreen}/> }
+          <CloseButton onClick={close} />
+        </Part>
       </Header>
       <Content />
       <Footer />
