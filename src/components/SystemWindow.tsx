@@ -3,6 +3,7 @@ import { Box, styled, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { systemService } from '../services/system.service';
 import { useOnDrag } from '../hooks/use-on-drag';
+import { useOnResize } from '../hooks/use-on-resize';
 
 type Props = {
   systemId: string;
@@ -66,7 +67,8 @@ const CloseButton = styled(CloseIcon)`
 `;
 
 export const SystemWindow = ({ systemId, close }: Props) => {
-  const [{ top, left, width, height }, setProperties] = useState(() => {
+  const [resizing, setResizing] = useState(false);
+  const [{ top, left, width, height, cursor }, setProperties] = useState(() => {
     const height = window.innerHeight / 2;
     const width = window.innerWidth / 1.5;
     return {
@@ -74,13 +76,26 @@ export const SystemWindow = ({ systemId, close }: Props) => {
     height,
     top: Math.floor((window.innerHeight - height) / 2),
     left: Math.floor((window.innerWidth - width) / 2),
+    cursor: 'auto'
   }});
 
   const system = systemService.get(systemId);
 
+  const onCursorChange = (cursor: string) => setProperties(props => ({ ...props, cursor }));
+
+  const onResize = (offset: { top: number, left: number, bottom: number, right: number }) => {
+    setProperties(props => ({
+      ...props,
+      top: props.top + offset.top,
+      left: props.left + offset.left,
+      height: Math.max(250, props.height + offset.bottom - offset.top),
+      width: Math.max(250, props.width + offset.right - offset.left),
+    }))
+  };
+
   return (
-    <Window sx={{ top, left, width, height }}>
-      <Header {...useOnDrag({ onDragMove: (e) => setProperties(props => ({ ...props, top: props.top + e.movementY, left: props.left + e.movementX }))})}>
+    <Window sx={{ top, left, width, height, cursor }} {...useOnResize({ onCursorChange, onResize, onChange: setResizing })}>
+      <Header {...useOnDrag({ draggable: !resizing, onDragMove: (e) => setProperties(props => ({ ...props, top: props.top + e.movementY, left: props.left + e.movementX }))})}>
         <Part><Typography sx={{ fontSize: 14, userSelect: 'none'}}>{system.name}</Typography></Part>
         <Space />
         <Part><CloseButton onClick={close} /></Part>
