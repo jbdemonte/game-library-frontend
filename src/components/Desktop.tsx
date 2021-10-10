@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Alert, Box, CircularProgress, Grid, Snackbar } from '@mui/material';
+import { Alert, Grid, Snackbar } from '@mui/material';
 import { systemService, SystemStatus } from '../services/system.service';
 import { System } from './System';
 import { IBaseDescriptor, WinManager } from './Win/WinManager';
 import { SystemWindow } from './SystemWindow';
 import { guid } from '../tools/guid';
+import { Loading } from './Loading';
 
 interface ISystemDescriptor extends IBaseDescriptor {
   system: string;
@@ -31,11 +32,7 @@ export const Desktop = () => {
 
   return (
     <>
-      { loading && (
-        <Box sx={{ width: 1, height: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <CircularProgress />
-        </Box>
-      ) }
+      { loading && <Loading />}
 
       { statuses && (
         <Grid container spacing={3} direction="column" sx={{p: 2}}>
