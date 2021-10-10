@@ -21,7 +21,7 @@ const Window = styled(Box)`
   flex-direction: column;
 `;
 
-export const Win: FC<Props> = ({ title }) => {
+export const Win: FC<Props> = ({ title, children }) => {
   const { descriptor, close, focus } = useContext(WindowContext);
   const [resizing, setResizing] = useState(false);
   const [{ top, left, width, height, cursor, fullscreen }, setProperties] = useState(() => {
@@ -72,7 +72,7 @@ export const Win: FC<Props> = ({ title }) => {
       >
         {title}
       </Header>
-      <Content />
+      <Content>{children}</Content>
       <Footer />
     </Window>
   );

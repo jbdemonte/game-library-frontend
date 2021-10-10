@@ -1,6 +1,8 @@
 import { apiService } from './api.service';
 import systems from '../data/systems.json';
 import { ISystem } from '../interfaces/system.interface';
+import { IGame } from '../interfaces/game.interface';
+import { IRom } from '../interfaces/rom.interface';
 
 export type SystemStatus = {
   system: string;
@@ -22,7 +24,18 @@ async function getStatuses() {
   return status;
 }
 
+export type GameData = {
+  game: IGame;
+  roms: IRom[];
+}
+
+async function getSystemGameData(systemId: string ): Promise<GameData[]> {
+  const { items } = await apiService.get<{ items: GameData[]}>(`systems/${systemId}`)
+  return items;
+}
+
 export const systemService = {
   get: getSystem,
   getStatuses,
+  getSystemGameData,
 };
