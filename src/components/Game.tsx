@@ -3,12 +3,13 @@ import { GameIcon } from './FileIcon/GameIcon';
 
 type Props = {
   game: IGame;
+  onDoubleClick?: () => void;
 }
 
-export const Game = ({ game }: Props) => {
+export const Game = ({ game, onDoubleClick }: Props) => {
   const media = getMedia(game);
   const url = media ? `${process.env.REACT_APP_API_URL}${media.url}` : `${process.env.PUBLIC_URL}/systems/icons/missing.png`;
-  return <GameIcon label={game.name} img={url} />;
+  return <GameIcon label={game.name} img={url} onDoubleClick={onDoubleClick} />;
 }
 
 function getMedia(game: IGame) {

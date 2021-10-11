@@ -1,37 +1,37 @@
 import { Box } from '@mui/material';
 import { ReactElement, useState } from 'react';
-import { WindowContext } from '../../contexts/window.context';
+import { WindowContext, WinPayload } from '../../contexts/window.context';
 import { guid } from '../../tools/guid';
 
-export interface IDescriptor<T extends object = {}> {
+export interface IDescriptor {
   id: string;
   pos: number;
-  data: T;
+  data: WinPayload;
 }
 
-type Props<T extends object> = {
-  descriptors: IDescriptor<T>[];
-  setDescriptors: (descriptors: IDescriptor<T>[]) => void
-  render: (data: T) => ReactElement;
+type Props = {
+  descriptors: IDescriptor[];
+  setDescriptors: (descriptors: IDescriptor[]) => void
+  openNewWindow: (data: WinPayload) => void;
+  render: (data: WinPayload) => ReactElement;
 }
 
-export const useWinManager = <T extends object>() => {
-  const [descriptors, setDescriptors] = useState<IDescriptor<T>[]>([]);
+export const useWinManager = () => {
+  const [descriptors, setDescriptors] = useState<IDescriptor[]>([]);
+
+  const openNewWindow = (data: WinPayload) => {
+    const pos = 1 + descriptors.reduce((max, descriptor) => Math.max(descriptor.pos, max), 0);
+    setDescriptors(items => [...items, { id: guid(), pos, data }]);
+  };
 
   return {
-    openNewWindow: (data: T) => {
-      const pos = 1 + descriptors.reduce((max, descriptor) => Math.max(descriptor.pos, max), 0);
-      setDescriptors(items => [...items, { id: guid(), pos, data }]);
-    },
-    winManagerProps: {
-      descriptors,
-      setDescriptors
-    }
+    descriptors,
+    setDescriptors,
+    openNewWindow,
   }
-
 };
 
-export const WinManager = <T extends object>({ descriptors, setDescriptors, render }: Props<T>) => {
+export const WinManager = ({ descriptors, setDescriptors, openNewWindow, render }: Props) => {
   function close(descriptor: IDescriptor) {
     setDescriptors(descriptors.filter(item => item.id !== descriptor.id));
   }
@@ -46,7 +46,7 @@ export const WinManager = <T extends object>({ descriptors, setDescriptors, rend
   return (
     <Box sx={{ position: 'absolute', inset: 0, backgroundColor: 'transparent', pointerEvents: 'none'}}>
       { descriptors.map(descriptor => (
-          <WindowContext.Provider key={descriptor.id} value={{ descriptor, close: () => close(descriptor), focus: () => focus(descriptor)}}>
+          <WindowContext.Provider key={descriptor.id} value={{ descriptor, close: () => close(descriptor), focus: () => focus(descriptor), openNewWindow}}>
             { render(descriptor.data) }
           </WindowContext.Provider>
         ))

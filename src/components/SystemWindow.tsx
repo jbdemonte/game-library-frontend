@@ -5,15 +5,21 @@ import { useContext, useEffect, useState } from 'react';
 import { Loading } from './Loading';
 import { Game } from './Game';
 import { ToastContext } from '../contexts/toast.context';
+import { WindowContext } from '../contexts/window.context';
 
-type Props = {
+export type SystemWindowData = {
   systemId: string;
 }
 
-export const SystemWindow = ({ systemId }: Props) => {
+export const isSystemWindowData = (data: any): data is SystemWindowData => {
+  return data.hasOwnProperty('systemId');
+}
+
+export const SystemWindow = ({ systemId }: SystemWindowData) => {
   const system = systemService.get(systemId);
   const [gameDataList, setGameDataList] = useState<GameData[]>();
   const { showError } = useContext(ToastContext);
+  const { openNewWindow } = useContext(WindowContext)
 
   useEffect(() => {
     systemService
@@ -28,7 +34,7 @@ export const SystemWindow = ({ systemId }: Props) => {
       { gameDataList && (
         <Box sx={{ position: 'absolute', inset: 1, overflow: 'auto', p: 2 }}>
           <Grid container direction="row" spacing={1}>
-            { gameDataList.map(({ game }) => <Game key={game.id} game={game} />)}
+            { gameDataList.map((gameData) => <Game key={gameData.game.id} game={gameData.game} onDoubleClick={() => openNewWindow({ gameData })} />)}
           </Grid>
         </Box>
       ) }
