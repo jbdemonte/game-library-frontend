@@ -1,14 +1,14 @@
 import { createContext } from 'react';
-import { IBaseDescriptor } from '../components/Win/WinManager';
+import { IDescriptor } from '../components/Win/WinManager';
 
 type WindowContextType = {
-  descriptor: IBaseDescriptor;
+  descriptor: IDescriptor;
   close: () => void;
   focus: () => void;
 }
 
 export const WindowContext = createContext<WindowContextType>({
-  descriptor: { id: '123', pos: 1 },
+  descriptor: { id: '123', pos: 1, data: {} },
   close: () => {},
   focus: () => {},
 })
