@@ -7,7 +7,8 @@ type Props = {
 
 export const Game = ({ game }: Props) => {
   const media = getMedia(game);
-  return <GameIcon label={game.name} img={`${process.env.REACT_APP_API_URL}${media?.url}`} />;
+  const url = media ? `${process.env.REACT_APP_API_URL}${media.url}` : `${process.env.PUBLIC_URL}/systems/icons/missing.png`;
+  return <GameIcon label={game.name} img={url} />;
 }
 
 function getMedia(game: IGame) {
