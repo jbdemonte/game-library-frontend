@@ -19,7 +19,7 @@ export const useToastContext = () => {
     }
   }), []);
 
-  const snackbarValue = useMemo(() => ({
+  const snackbarProps = useMemo(() => ({
     open,
     onClose(event: SyntheticEvent | MouseEvent, reason?: string) {
       if (reason === 'clickaway') {
@@ -32,6 +32,6 @@ export const useToastContext = () => {
   return {
     error,
     toastContextValue,
-    snackbarValue,
+    snackbarProps,
   };
 }

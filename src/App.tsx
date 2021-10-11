@@ -20,7 +20,7 @@ const theme = createTheme({
 });
 
 function App() {
-  const { error, toastContextValue, snackbarValue } = useToastContext();
+  const { error, toastContextValue, snackbarProps } = useToastContext();
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -28,8 +28,8 @@ function App() {
         <Desktop />
       </ToastContext.Provider>
 
-      <Snackbar {...snackbarValue} autoHideDuration={6000} anchorOrigin={{ vertical: 'top', horizontal: 'right'}}>
-        <Alert onClose={snackbarValue.onClose} severity="error" sx={{ width: '100%' }}>
+      <Snackbar {...snackbarProps} autoHideDuration={6000} anchorOrigin={{ vertical: 'top', horizontal: 'right'}}>
+        <Alert onClose={snackbarProps.onClose} severity="error" sx={{ width: '100%' }}>
           {typeof error === 'string' ? error : error?.message || 'Unknown error'}
         </Alert>
       </Snackbar>
