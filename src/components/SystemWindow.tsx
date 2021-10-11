@@ -1,9 +1,10 @@
 import { Box, Grid } from '@mui/material';
 import { GameData, systemService } from '../services/system.service';
 import { Win } from './Win/Win';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Loading } from './Loading';
 import { Game } from './Game';
+import { ToastContext } from '../contexts/toast.context';
 
 type Props = {
   systemId: string;
@@ -12,13 +13,14 @@ type Props = {
 export const SystemWindow = ({ systemId }: Props) => {
   const system = systemService.get(systemId);
   const [gameDataList, setGameDataList] = useState<GameData[]>();
+  const { showError } = useContext(ToastContext);
 
   useEffect(() => {
     systemService
       .getSystemGameData(systemId)
       .then(setGameDataList)
-      .catch(err => console.log(err)) // todo
-  }, [systemId])
+      .catch(showError)
+  }, [systemId, showError])
 
   return (
     <Win title={system.name}>

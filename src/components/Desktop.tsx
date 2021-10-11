@@ -1,28 +1,29 @@
-import { useEffect, useState } from 'react';
-import { Alert, Grid, Snackbar } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
+import {  Grid } from '@mui/material';
 import { systemService, SystemStatus } from '../services/system.service';
 import { System } from './System';
 import { useWinManager, WinManager } from './Win/WinManager';
 import { SystemWindow } from './SystemWindow';
 import { Loading } from './Loading';
+import { ToastContext } from '../contexts/toast.context';
 
 interface ISystemData {
   system: string;
 }
 
 export const Desktop = () => {
-  const [statuses, setStatuses] = useState<SystemStatus[]>();
-  const [error, setError] = useState<Error>();
   const [loading, setLoading] = useState(true);
+  const [statuses, setStatuses] = useState<SystemStatus[]>();
+  const { showError } = useContext(ToastContext);
   const { openNewWindow, winManagerProps } = useWinManager<ISystemData>();
 
   useEffect(() => {
     systemService
       .getStatuses()
       .then(setStatuses)
-      .catch(setError)
+      .catch(showError)
       .finally(() => setLoading(false));
-  }, []);
+  }, [showError]);
 
   return (
     <>
@@ -34,13 +35,7 @@ export const Desktop = () => {
         </Grid>
       ) }
 
-      <WinManager {...winManagerProps} render={data => <SystemWindow systemId={data.system } />} />
-
-      <Snackbar open={Boolean(error)} autoHideDuration={6000} anchorOrigin={{ vertical: 'top', horizontal: 'right'}} onClose={() => setError(undefined)}>
-        <Alert onClose={() => setError(undefined)} severity="error" sx={{ width: '100%' }}>
-          {error?.message || 'Unknown error'}
-        </Alert>
-      </Snackbar>
+        <WinManager {...winManagerProps} render={data => <SystemWindow systemId={data.system } />} />
     </>
   );
 }

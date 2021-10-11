@@ -1,5 +1,6 @@
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import { Alert, createTheme, CssBaseline, Snackbar, ThemeProvider } from '@mui/material';
 import { Desktop } from './components/Desktop';
+import { useToastContext, ToastContext } from './contexts/toast.context';
 
 // https://mui.com/components/typography/#general
 import '@fontsource/roboto/300.css';
@@ -19,10 +20,19 @@ const theme = createTheme({
 });
 
 function App() {
+  const { error, toastContextValue, snackbarValue } = useToastContext();
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Desktop />
+      <ToastContext.Provider value={toastContextValue}>
+        <Desktop />
+      </ToastContext.Provider>
+
+      <Snackbar {...snackbarValue} autoHideDuration={6000} anchorOrigin={{ vertical: 'top', horizontal: 'right'}}>
+        <Alert onClose={snackbarValue.onClose} severity="error" sx={{ width: '100%' }}>
+          {typeof error === 'string' ? error : error?.message || 'Unknown error'}
+        </Alert>
+      </Snackbar>
     </ThemeProvider>
   );
 }
