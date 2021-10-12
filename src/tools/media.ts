@@ -27,6 +27,10 @@ export function getMedia(medias: IMedia[], type: MediaType) {
   return medias.filter(media => media.type === type).sort(sortByRegion).shift();
 }
 
+export function getVideoMedia(medias: IMedia[]) {
+  return getMedia(medias, MediaType.videoNormalized) || getMedia(medias, MediaType.video);
+}
+
 export function getDefaultMedia(medias: IMedia[]) {
   const types = [MediaType.box2D, MediaType.box3D, MediaType.screen, MediaType.title];
   for (const type of types) {

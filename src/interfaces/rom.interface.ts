@@ -1,5 +1,6 @@
 export interface IArchive {
   name: string;
+  url: string;
   crc: string;
   md5: string;
   size: number;

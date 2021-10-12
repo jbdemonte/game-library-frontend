@@ -10,5 +10,6 @@ export interface IGame {
   medias: IMedia[];
   synopsis: string;
   players: number;
+  grade?: number;
   id: string;
 }
