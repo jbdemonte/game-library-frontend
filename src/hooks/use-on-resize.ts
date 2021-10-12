@@ -70,7 +70,7 @@ export const useOnResize = ({ onCursorChange, onResize, onChange, resizable, onP
 }
 
 function getActiveSides(e: React.PointerEvent<HTMLElement>) {
-  const size = 5;
+  const size = 8;
   const element = e.currentTarget;
   const rect = element.getBoundingClientRect();
   const x = Math.floor(e.clientX - rect.left);
