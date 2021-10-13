@@ -6,7 +6,7 @@ import HelpIcon from '@mui/icons-material/Help';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { GameData } from '../services/system.service';
+import { ScrapedGame } from '../services/system.service';
 import { Win } from './Win/Win';
 import { getDefaultMedia, getVideoMedia } from '../tools/media';
 import { IGame } from '../interfaces/game.interface';
@@ -16,7 +16,7 @@ import { Gallery } from './MediaGallery';
 import { Image } from './Image';
 
 export type GameWindowData = {
-  gameData: GameData;
+  gameData: ScrapedGame;
 }
 
 const DetailsBox = ({ game, playVideo }: { game: IGame, playVideo?: () => void}) => (

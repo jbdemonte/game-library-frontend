@@ -1,8 +1,11 @@
 import { Box, styled } from '@mui/material';
+import * as React from 'react';
+import { ElementType, createElement } from 'react';
 
 type BoxStyledProps = {
   iconOutSize: number;
   iconSize: number;
+  icon?: ElementType;
 };
 
 function boxStyled({ iconOutSize, iconSize }: BoxStyledProps) {
@@ -28,6 +31,11 @@ function boxStyled({ iconOutSize, iconSize }: BoxStyledProps) {
       max-height: ${iconSize}px;
     }
     
+    svg {
+      width: ${iconSize}px;
+      height: ${iconSize}px;
+    }
+    
     p {
       font-size: 12px;
       text-align: center;
@@ -46,15 +54,18 @@ function boxStyled({ iconOutSize, iconSize }: BoxStyledProps) {
 
 type Props = {
   label: string;
-  img: string;
+  img?: string;
   onDoubleClick?: () => void;
 }
 
-export function FileIconStyled({ iconOutSize, iconSize}: BoxStyledProps) {
+export function FileIconStyled({ icon, iconOutSize, iconSize}: BoxStyledProps) {
   const StyledBox = boxStyled({ iconOutSize, iconSize });
   return ({ img, label, onDoubleClick }: Props) => (
     <StyledBox onDoubleClick={onDoubleClick}>
-      <div><img src={img} alt={label} /></div>
+      <div>
+        { Boolean(img) && <img src={img} alt={label} /> }
+        { icon && createElement(icon) }
+      </div>
       <p>{ label }</p>
     </StyledBox>
   );

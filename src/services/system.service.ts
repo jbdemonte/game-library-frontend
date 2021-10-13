@@ -24,18 +24,17 @@ async function getStatuses() {
   return status;
 }
 
-export type GameData = {
+export type ScrapedGame = {
   game: IGame;
   roms: IRom[];
 }
 
-async function getSystemGameData(systemId: string ): Promise<GameData[]> {
-  const { items } = await apiService.get<{ items: GameData[]}>(`systems/${systemId}`)
-  return items;
+function getSystemContent(systemId: string ) {
+  return apiService.get<{ scraped: ScrapedGame[], roms: IRom[]}>(`systems/${systemId}`)
 }
 
 export const systemService = {
   get: getSystem,
   getStatuses,
-  getSystemGameData,
+  getSystemContent,
 };
