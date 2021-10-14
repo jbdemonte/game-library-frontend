@@ -15,6 +15,7 @@ function boxStyled({ iconOutSize, iconSize }: BoxStyledProps) {
     display: flex;
     flex-direction: column;
     align-items: center;
+    user-select: none;
     
     div {
       width: ${iconOutSize}px;
