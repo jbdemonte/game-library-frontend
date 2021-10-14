@@ -60,7 +60,7 @@ export const SystemWindow = ({ systemId }: SystemWindowData) => {
   }, [content]);
 
   return (
-    <Win title={system.name} footer={footer}>
+    <Win title={system.name} img={system.icon ? `${process.env.PUBLIC_URL}/systems/icons/${system.icon}` : ''} footer={footer}>
       { content ? (
         <Box sx={{ position: 'absolute', inset: 1, overflow: 'auto', p: 2 }}>
           <Grid container direction="row" spacing={1}>

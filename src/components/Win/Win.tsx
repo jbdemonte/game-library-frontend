@@ -9,6 +9,7 @@ import { WinContext } from '../../contexts/win.context';
 
 type Props = {
   title: string;
+  img?: string;
   footer?: [string, string, string];
 }
 
@@ -27,7 +28,7 @@ function randomOffset(size: number, percent: number) {
   return sign * Math.floor((size * percent / 100) * Math.random());
 }
 
-export const Win: FC<Props> = ({ title, footer = [], children }) => {
+export const Win: FC<Props> = ({ img, title, footer = [], children }) => {
   const { descriptor, close, focus } = useContext(WinContext);
   const [resizing, setResizing] = useState(false);
   const [{ top, left, width, height, cursor, fullscreen }, setProperties] = useState(() => {
@@ -80,6 +81,7 @@ export const Win: FC<Props> = ({ title, footer = [], children }) => {
         onFullScreenClick={toggleFullScreen}
         {...useOnDrag({ draggable: !fullscreen && !resizing, onDragMove: (e) => setProperties(props => ({ ...props, top: props.top + e.movementY, left: props.left + e.movementX }))})}
       >
+        { Boolean(img) && <img src={img} alt={title} style={{ maxHeight: '18px', width: 'auto', verticalAlign: 'middle', marginRight: '5px'}} />}
         {title}
       </Header>
       <Content>{children}</Content>
