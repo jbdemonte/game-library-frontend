@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 import { IDescriptor } from '../components/Win/WinManager';
 
-type WinContextType = {
+export type WinContextType = {
   descriptor: IDescriptor;
   close: () => void;
   focus: () => void;
