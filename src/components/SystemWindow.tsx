@@ -7,7 +7,8 @@ import { Game } from './Game';
 import { ToastContext } from '../contexts/toast.context';
 import { IRom } from '../interfaces/rom.interface';
 import { Rom } from './Rom';
-import { WinManagerContext } from '../contexts/win-manager.context';
+import { gameWindowDataEquals } from './GameWindow';
+import { WinManagerContext, WinPayload } from '../contexts/win-manager.context';
 
 export type SystemWindowData = {
   systemId: string;
@@ -15,6 +16,10 @@ export type SystemWindowData = {
 
 export const isSystemWindowData = (data: any): data is SystemWindowData => {
   return data.hasOwnProperty('systemId');
+}
+
+export function systemWindowDataEquals(payloadA: WinPayload, payloadB: WinPayload) {
+  return isSystemWindowData(payloadA) && isSystemWindowData(payloadB) && payloadA.systemId === payloadB.systemId;
 }
 
 export const SystemWindow = ({ systemId }: SystemWindowData) => {
@@ -35,7 +40,7 @@ export const SystemWindow = ({ systemId }: SystemWindowData) => {
       { content ? (
         <Box sx={{ position: 'absolute', inset: 1, overflow: 'auto', p: 2 }}>
           <Grid container direction="row" spacing={1}>
-            { content.scraped.map((gameData) => <Game key={gameData.game.id} data={gameData} onDoubleClick={() => openNewWindow({ gameData })} />)}
+            { content.scraped.map((gameData) => <Game key={gameData.game.id} data={gameData} onDoubleClick={() => openNewWindow({ gameData }, gameWindowDataEquals)} />)}
             { content.roms.map((rom) => <Rom key={rom.id} rom={rom} />)}
           </Grid>
         </Box>

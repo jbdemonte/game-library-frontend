@@ -2,7 +2,7 @@ import { FC, ReactElement, useState } from 'react';
 import { Box } from '@mui/material';
 import { WinContext  } from '../../contexts/win.context';
 import { guid } from '../../tools/guid';
-import { WinManagerContext, WinPayload } from '../../contexts/win-manager.context';
+import { WinManagerContext, WinPayload, WinPayloadEqualFunction } from '../../contexts/win-manager.context';
 
 export interface IDescriptor {
   id: string;
@@ -38,8 +38,18 @@ export const WinManager: FC<Props> = ({ render, children }) => {
     setDescriptors(descriptors => descriptors.map(item => item.id === descriptor.id ? { ...descriptor, footer: [left || '', center || '', right || ''] } : item));
   }
 
+  function openNewWindowOrFocusExistingOne(payload: WinPayload, equals?: WinPayloadEqualFunction) {
+    if (equals) {
+      const descriptor = descriptors.find(descriptor => equals(payload, descriptor.payload));
+      if (descriptor) {
+        return focus(descriptor);
+      }
+    }
+    openNewWindow(payload);
+  }
+
   return (
-    <WinManagerContext.Provider value={{ openNewWindow }}>
+    <WinManagerContext.Provider value={{ openNewWindow: openNewWindowOrFocusExistingOne }}>
       { children }
       <Box sx={{ position: 'absolute', inset: 0, backgroundColor: 'transparent', pointerEvents: 'none'}}>
         { descriptors.map(descriptor => (
