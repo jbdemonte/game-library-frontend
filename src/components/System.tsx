@@ -11,5 +11,5 @@ type Props = {
 export const System = ({ systemId }: Props) => {
   const { openNewWindow } = useContext(WinManagerContext);
   const system = systemService.get(systemId);
-  return <SystemIcon label={system.name} img={`${process.env.PUBLIC_URL}/systems/icons/${system.icon || 'missing.png'}`} onDoubleClick={() => openNewWindow({ systemId }, systemWindowDataEquals)}/>
+  return <SystemIcon label={system.name} img={`${process.env.PUBLIC_URL}/systems/icons/${system.icon || 'missing.png'}`} onDoubleClick={() => openNewWindow({ systemId }, { equals: systemWindowDataEquals })}/>
 };

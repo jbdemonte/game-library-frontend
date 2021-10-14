@@ -2,7 +2,7 @@ import { FC, ReactElement, useMemo, useState } from 'react';
 import { Box } from '@mui/material';
 import { WinContext, WinContextType } from '../../contexts/win.context';
 import { guid } from '../../tools/guid';
-import { WinManagerContext, WinPayload, WinPayloadEqualFunction } from '../../contexts/win-manager.context';
+import { WinManagerContext, WinOptions, WinPayload } from '../../contexts/win-manager.context';
 
 export interface IDescriptor {
   id: string;
@@ -29,7 +29,7 @@ export const WinManager: FC<Props> = ({ render, children }) => {
   const [descriptors, setDescriptors] = useState<IDescriptor[]>([]);
 
   const winManagerContextValue = useMemo(() => ({
-    openNewWindow: (payload: WinPayload, equals?: WinPayloadEqualFunction) => {
+    openNewWindow: (payload: WinPayload, { equals }: WinOptions = {}) => {
       setDescriptors(descriptors => {
         const existing = equals ? descriptors.find(descriptor => equals(payload, descriptor.payload)) : undefined;
         if (existing) {

@@ -40,7 +40,7 @@ export const SystemWindow = ({ systemId }: SystemWindowData) => {
       { content ? (
         <Box sx={{ position: 'absolute', inset: 1, overflow: 'auto', p: 2 }}>
           <Grid container direction="row" spacing={1}>
-            { content.scraped.map((gameData) => <Game key={gameData.game.id} data={gameData} onDoubleClick={() => openNewWindow({ gameData }, gameWindowDataEquals)} />)}
+            { content.scraped.map((gameData) => <Game key={gameData.game.id} data={gameData} onDoubleClick={() => openNewWindow({ gameData }, { equals: gameWindowDataEquals })} />)}
             { content.roms.map((rom) => <Rom key={rom.id} rom={rom} />)}
           </Grid>
         </Box>

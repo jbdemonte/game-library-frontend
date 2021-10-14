@@ -6,8 +6,12 @@ export type WinPayload = SystemWindowData | GameWindowData;
 
 export type WinPayloadEqualFunction = (payloadA: WinPayload, payloadB: WinPayload) => boolean;
 
+export type WinOptions = {
+  equals?: WinPayloadEqualFunction;
+}
+
 type WindowManagerContextType = {
-  openNewWindow: (payload: WinPayload, equals?: WinPayloadEqualFunction) => void;
+  openNewWindow: (payload: WinPayload, options?: WinOptions) => void;
 }
 
 export const WinManagerContext = createContext<WindowManagerContextType>({
