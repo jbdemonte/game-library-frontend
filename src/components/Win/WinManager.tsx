@@ -1,4 +1,4 @@
-import { FC, ReactElement, useMemo, useState } from 'react';
+import { FC, ReactElement, useEffect, useMemo, useState } from 'react';
 import { Box } from '@mui/material';
 import { WinContext, WinContextType } from '../../contexts/win.context';
 import { guid } from '../../tools/guid';
@@ -27,6 +27,30 @@ function updateFocusTo(descriptors: IDescriptor[], descriptor: IDescriptor) {
 
 export const WinManager: FC<Props> = ({ render, children }) => {
   const [descriptors, setDescriptors] = useState<IDescriptor[]>([]);
+
+  useEffect(() => {
+    function keydown(event: KeyboardEvent) {
+      if (event.defaultPrevented) {
+        return; // Do nothing if the event was already processed
+      }
+
+      if (event.key === 'Escape') {
+        setDescriptors(descriptors => {
+          if (descriptors.length) {
+            event.preventDefault();
+            const descriptor = descriptors.reduce((previous, current) => previous.pos > current.pos ? previous : current);
+            return descriptors.filter(current => current !== descriptor);
+          }
+          return descriptors;
+        });
+      }
+    }
+
+    window.addEventListener('keydown', keydown);
+    return () => {
+      window.removeEventListener('keydown', keydown);
+    };
+  }, []);
 
   const winManagerContextValue = useMemo(() => ({
     openNewWindow: (payload: WinPayload, { equals }: WinOptions = {}) => {
