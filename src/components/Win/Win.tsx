@@ -22,17 +22,24 @@ const Window = styled(Box)`
   flex-direction: column;
 `;
 
+function randomOffset(size: number, percent: number) {
+  const sign = Math.sign(Math.random() - 0.5);
+  return sign * Math.floor((size * percent / 100) * Math.random());
+}
+
 export const Win: FC<Props> = ({ title, footer = [], children }) => {
   const { descriptor, close, focus } = useContext(WinContext);
   const [resizing, setResizing] = useState(false);
   const [{ top, left, width, height, cursor, fullscreen }, setProperties] = useState(() => {
     const height = window.innerHeight / 2;
     const width = window.innerWidth / 2.5;
+    const randX = randomOffset(window.innerWidth - width, 20);
+    const randY = randomOffset(window.innerHeight - height, 20);
     return {
     width,
     height,
-    top: Math.floor((window.innerHeight - height) / 2),
-    left: Math.floor((window.innerWidth - width) / 2),
+    top: Math.floor((window.innerHeight - height) / 2) + randY,
+    left: Math.floor((window.innerWidth - width) / 2) + randX,
     cursor: 'auto',
     fullscreen: false
   }});
