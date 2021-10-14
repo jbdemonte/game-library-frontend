@@ -27,17 +27,17 @@ export const Desktop = () => {
       { loading && <Loading />}
 
       { statuses && (
-        <Grid container spacing={3} direction="column" sx={{p: 2}}>
+        <Grid container spacing={3} direction="column" sx={{ position: 'absolute', top: 0, left: 0, bottom: 0, p: 2, width: 'auto', maxWidth: '100%'}}>
           { statuses.map(status => <Grid item key={status.system}><System systemId={status.system} onDoubleClick={() => winManagerProps.openNewWindow({ systemId: status.system })} /></Grid> ) }
         </Grid>
       ) }
 
-        <WinManager {...winManagerProps} render={data => {
-          if (isSystemWindowData(data)) {
-            return <SystemWindow systemId={data.systemId } />;
-          }
-          return <GameWindow gameData={data.gameData} />
-        }} />
+      <WinManager {...winManagerProps} render={data => {
+        if (isSystemWindowData(data)) {
+          return <SystemWindow systemId={data.systemId } />;
+        }
+        return <GameWindow gameData={data.gameData} />
+      }} />
     </>
   );
 }
