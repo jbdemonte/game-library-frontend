@@ -5,7 +5,7 @@ import { useOnResize } from '../../hooks/use-on-resize';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Content } from './components/Content';
-import { WindowContext } from '../../contexts/window.context';
+import { WinContext } from '../../contexts/win.context';
 
 type Props = {
   title: string;
@@ -22,7 +22,7 @@ const Window = styled(Box)`
 `;
 
 export const Win: FC<Props> = ({ title, children }) => {
-  const { descriptor, close, focus } = useContext(WindowContext);
+  const { descriptor, close, focus } = useContext(WinContext);
   const [resizing, setResizing] = useState(false);
   const [{ top, left, width, height, cursor, fullscreen }, setProperties] = useState(() => {
     const height = window.innerHeight / 2;

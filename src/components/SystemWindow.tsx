@@ -5,9 +5,9 @@ import { useContext, useEffect, useState } from 'react';
 import { Loading } from './Loading';
 import { Game } from './Game';
 import { ToastContext } from '../contexts/toast.context';
-import { WindowContext } from '../contexts/window.context';
 import { IRom } from '../interfaces/rom.interface';
 import { Rom } from './Rom';
+import { WinManagerContext } from '../contexts/win-manager.context';
 
 export type SystemWindowData = {
   systemId: string;
@@ -21,7 +21,7 @@ export const SystemWindow = ({ systemId }: SystemWindowData) => {
   const system = systemService.get(systemId);
   const [content, setContent] = useState<{ scraped: ScrapedGame[], roms: IRom[] }>();
   const { showError } = useContext(ToastContext);
-  const { openNewWindow } = useContext(WindowContext);
+  const { openNewWindow } = useContext(WinManagerContext);
 
   useEffect(() => {
     systemService

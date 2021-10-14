@@ -1,7 +1,7 @@
 import { GameIcon } from './FileIcon/GameIcon';
 import { getDefaultMedia } from '../tools/media';
 import { useContext } from 'react';
-import { WindowContext } from '../contexts/window.context';
+import { WinContext } from '../contexts/win.context';
 import { ScrapedGame } from '../services/system.service';
 import { formatFileSize } from '../tools/file';
 
@@ -11,7 +11,7 @@ type Props = {
 }
 
 export const Game = ({ data: { game, roms }, onDoubleClick }: Props) => {
-  const { setFooter } = useContext(WindowContext);
+  const { setFooter } = useContext(WinContext);
   const media = getDefaultMedia(game.medias);
   const url = media ? `${process.env.REACT_APP_API_URL}${media.url}` : `${process.env.PUBLIC_URL}/systems/icons/missing.png`;
   const resume = roms.length > 1 ? `${roms.length} roms` : '1 rom';

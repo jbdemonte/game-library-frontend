@@ -3,7 +3,7 @@ import { Link } from '@mui/material';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { IRom } from '../interfaces/rom.interface';
 import { FileIconStyled } from './FileIcon/FileIconStyled';
-import { WindowContext } from '../contexts/window.context';
+import { WinContext } from '../contexts/win.context';
 import { formatFileSize } from '../tools/file';
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 const RomIcon = FileIconStyled({ icon: SportsEsportsIcon, iconSize: 64, iconOutSize: 80})
 
 export const Rom = ({ rom }: Props) => {
-  const { setFooter } = useContext(WindowContext);
+  const { setFooter } = useContext(WinContext);
   return (
     <Link href={rom.archive.url} style={{color: 'white', textDecoration: 'none'}}>
       <RomIcon

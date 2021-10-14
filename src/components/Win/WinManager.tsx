@@ -1,38 +1,28 @@
-import { Dispatch, ReactElement, SetStateAction, useState } from 'react';
+import { FC, ReactElement, useState } from 'react';
 import { Box } from '@mui/material';
-import { WindowContext, WinPayload } from '../../contexts/window.context';
+import { WinContext  } from '../../contexts/win.context';
 import { guid } from '../../tools/guid';
+import { WinManagerContext, WinPayload } from '../../contexts/win-manager.context';
 
 export interface IDescriptor {
   id: string;
   pos: number;
-  data: WinPayload;
+  payload: WinPayload;
   footer: [string, string, string];
 }
 
 type Props = {
-  descriptors: IDescriptor[];
-  setDescriptors: Dispatch<SetStateAction<IDescriptor[]>>;
-  openNewWindow: (data: WinPayload) => void;
-  render: (data: WinPayload) => ReactElement;
+  render: (payload: WinPayload) => ReactElement;
 }
 
-export const useWinManager = () => {
+export const WinManager: FC<Props> = ({ render, children }) => {
   const [descriptors, setDescriptors] = useState<IDescriptor[]>([]);
 
-  const openNewWindow = (data: WinPayload) => {
+  const openNewWindow = (payload: WinPayload) => {
     const pos = 1 + descriptors.reduce((max, descriptor) => Math.max(descriptor.pos, max), 0);
-    setDescriptors(items => [...items, { id: guid(), pos, data, footer: ['', '', ''] }]);
+    setDescriptors(items => [...items, { id: guid(), pos, payload, footer: ['', '', ''] }]);
   };
 
-  return {
-    descriptors,
-    setDescriptors,
-    openNewWindow,
-  }
-};
-
-export const WinManager = ({ descriptors, setDescriptors, openNewWindow, render }: Props) => {
   function close(descriptor: IDescriptor) {
     setDescriptors(descriptors => descriptors.filter(item => item.id !== descriptor.id));
   }
@@ -49,13 +39,16 @@ export const WinManager = ({ descriptors, setDescriptors, openNewWindow, render 
   }
 
   return (
-    <Box sx={{ position: 'absolute', inset: 0, backgroundColor: 'transparent', pointerEvents: 'none'}}>
-      { descriptors.map(descriptor => (
-          <WindowContext.Provider key={descriptor.id} value={{ descriptor, close: () => close(descriptor), focus: () => focus(descriptor), openNewWindow, setFooter: setFooter.bind(null, descriptor) }}>
-            { render(descriptor.data) }
-          </WindowContext.Provider>
-        ))
-      }
-    </Box>
+    <WinManagerContext.Provider value={{ openNewWindow }}>
+      { children }
+      <Box sx={{ position: 'absolute', inset: 0, backgroundColor: 'transparent', pointerEvents: 'none'}}>
+        { descriptors.map(descriptor => (
+            <WinContext.Provider key={descriptor.id} value={{ descriptor, close: () => close(descriptor), focus: () => focus(descriptor), setFooter: setFooter.bind(null, descriptor) }}>
+              { render(descriptor.payload) }
+            </WinContext.Provider>
+          ))
+        }
+      </Box>
+    </WinManagerContext.Provider>
   );
 }

@@ -14,9 +14,18 @@ import { Video } from './Video';
 import { RomTable } from './RomTable';
 import { Gallery } from './MediaGallery';
 import { Image } from './Image';
+import { WinPayload } from '../contexts/win-manager.context';
 
 export type GameWindowData = {
   gameData: ScrapedGame;
+}
+
+export const isGameWindowData = (data: any): data is GameWindowData => {
+  return data.hasOwnProperty('gameData');
+}
+
+export function gameWindowDataEquals(payloadA: WinPayload, payloadB: WinPayload) {
+  return isGameWindowData(payloadA) && isGameWindowData(payloadB) && payloadA.gameData.game.id === payloadB.gameData.game.id;
 }
 
 const DetailsBox = ({ game, playVideo }: { game: IGame, playVideo?: () => void}) => (
