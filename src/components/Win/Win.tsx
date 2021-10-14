@@ -9,6 +9,7 @@ import { WinContext } from '../../contexts/win.context';
 
 type Props = {
   title: string;
+  footer?: [string, string, string];
 }
 
 const Window = styled(Box)`
@@ -21,12 +22,12 @@ const Window = styled(Box)`
   flex-direction: column;
 `;
 
-export const Win: FC<Props> = ({ title, children }) => {
+export const Win: FC<Props> = ({ title, footer = [], children }) => {
   const { descriptor, close, focus } = useContext(WinContext);
   const [resizing, setResizing] = useState(false);
   const [{ top, left, width, height, cursor, fullscreen }, setProperties] = useState(() => {
     const height = window.innerHeight / 2;
-    const width = window.innerWidth / 1.5;
+    const width = window.innerWidth / 2.5;
     return {
     width,
     height,
@@ -52,6 +53,8 @@ export const Win: FC<Props> = ({ title, children }) => {
     setProperties(props => ({ ...props, fullscreen: !props.fullscreen }));
   };
 
+  const currentFooter = descriptor.footer.some(text => text) ? descriptor.footer : footer;
+
   return (
     <Window
       sx={ fullscreen ? { inset: 5, zIndex: descriptor.pos } : { top, left, width, height, cursor, zIndex: descriptor.pos }}
@@ -75,9 +78,9 @@ export const Win: FC<Props> = ({ title, children }) => {
       <Content>{children}</Content>
       <Footer>
         <Box sx={{ display: 'flex', fontSize: '12px', height: 1, alignItems: 'center'}}>
-          <Box sx={{ textAlign: 'left'}}>{ descriptor.footer[0] }</Box>
-          <Box sx={{ textAlign: 'center', flexGrow: 1}}>{ descriptor.footer[1] }</Box>
-          <Box sx={{ textAlign: 'right'}}>{ descriptor.footer[2] }</Box>
+          <Box sx={{ textAlign: 'left'}}>{ currentFooter[0]}</Box>
+          <Box sx={{ textAlign: 'center', flexGrow: 1}}>{ currentFooter[1] }</Box>
+          <Box sx={{ textAlign: 'right'}}>{ currentFooter[2] }</Box>
         </Box>
       </Footer>
     </Window>
