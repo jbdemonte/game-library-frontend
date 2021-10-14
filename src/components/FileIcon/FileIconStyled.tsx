@@ -56,12 +56,14 @@ type Props = {
   label: string;
   img?: string;
   onDoubleClick?: () => void;
+  onPointerEnter?: () => void;
+  onPointerLeave?: () => void;
 }
 
-export function FileIconStyled({ icon, iconOutSize, iconSize}: BoxStyledProps) {
+export function FileIconStyled({ icon, iconOutSize, iconSize }: BoxStyledProps) {
   const StyledBox = boxStyled({ iconOutSize, iconSize });
-  return ({ img, label, onDoubleClick }: Props) => (
-    <StyledBox onDoubleClick={onDoubleClick}>
+  return ({ img, label, ...events }: Props) => (
+    <StyledBox {...events}>
       <div>
         { Boolean(img) && <img src={img} alt={label} /> }
         { icon && createElement(icon) }

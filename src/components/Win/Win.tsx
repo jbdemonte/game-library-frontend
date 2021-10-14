@@ -73,7 +73,13 @@ export const Win: FC<Props> = ({ title, children }) => {
         {title}
       </Header>
       <Content>{children}</Content>
-      <Footer />
+      <Footer>
+        <Box sx={{ display: 'flex', fontSize: '12px', height: 1, alignItems: 'center'}}>
+          <Box sx={{ textAlign: 'left'}}>{ descriptor.footer[0] }</Box>
+          <Box sx={{ textAlign: 'center', flexGrow: 1}}>{ descriptor.footer[1] }</Box>
+          <Box sx={{ textAlign: 'right'}}>{ descriptor.footer[2] }</Box>
+        </Box>
+      </Footer>
     </Window>
   );
 };

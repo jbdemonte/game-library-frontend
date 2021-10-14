@@ -10,11 +10,13 @@ type WindowContextType = {
   close: () => void;
   focus: () => void;
   openNewWindow: (data: WinPayload) => void;
+  setFooter: (left?: string, center?: string, right?: string) => void;
 }
 
 export const WindowContext = createContext<WindowContextType>({
-  descriptor: { id: '123', pos: 1, data: { systemId: 'nes'} },
+  descriptor: { id: '123', pos: 1, data: { systemId: 'nes'}, footer: ['', '', ''] },
   close: () => {},
   focus: () => {},
   openNewWindow: () => {},
+  setFooter: () => {},
 })
