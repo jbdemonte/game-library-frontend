@@ -4,11 +4,11 @@ import { WinContext, WinContextType } from '../../contexts/win.context';
 import { guid } from '../../tools/guid';
 import { WinManagerContext, WinOptions, WinPayload } from '../../contexts/win-manager.context';
 
-export interface IDescriptor {
+interface IDescriptor {
   id: string;
   pos: number;
   payload: WinPayload;
-  footer: [string, string, string];
+  footer?: [string, string, string];
 }
 
 type Props = {
@@ -71,7 +71,6 @@ export const WinManager: FC<Props> = ({ render, children }) => {
           id: guid(),
           pos: 1 + getMaxPos(descriptors),
           payload,
-          footer: ['', '', '']
         }]);
       })
     }
@@ -84,8 +83,8 @@ export const WinManager: FC<Props> = ({ render, children }) => {
     focus: (id: string) => {
       setDescriptors(descriptors => updateFocusTo(descriptors, id));
     },
-    setFooter: (id: string, left?: string, center?: string, right?: string) => {
-      setDescriptors(descriptors => descriptors.map(descriptor => descriptor.id === id ? { ...descriptor, footer: [left || '', center || '', right || ''] } : descriptor));
+    setFooter: (id: string, left: string = '', center: string = '', right: string = '') => {
+      setDescriptors(descriptors => descriptors.map(descriptor => descriptor.id === id ? { ...descriptor, footer: (left || center || right) ? [left, center, right] : undefined } : descriptor));
     },
   }), []);
 
@@ -109,9 +108,10 @@ type GenericWinProps = {
 
 const GenericWin = ({ descriptor, close, focus, setFooter, render }: GenericWinProps) => {
   const contextValue: WinContextType = useMemo(() => ({
-    descriptor,
+    zIndex: descriptor.pos,
     close: close.bind(null, descriptor.id),
     focus: focus.bind(null, descriptor.id),
+    footer: descriptor.footer ? descriptor.footer.slice() as [string, string, string] : undefined,
     setFooter: setFooter.bind(null, descriptor.id)
   }), [descriptor, close, focus, setFooter]);
   return (

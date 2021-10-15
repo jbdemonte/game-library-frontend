@@ -28,8 +28,8 @@ function randomOffset(size: number, percent: number) {
   return sign * Math.floor((size * percent / 100) * Math.random());
 }
 
-export const Win: FC<Props> = ({ img, title, footer = [], children }) => {
-  const { descriptor, close, focus } = useContext(WinContext);
+export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) => {
+  const { footer, zIndex, close, focus } = useContext(WinContext);
   const [resizing, setResizing] = useState(false);
   const [{ top, left, width, height, cursor, fullscreen }, setProperties] = useState(() => {
     const height = window.innerHeight / 2;
@@ -67,11 +67,9 @@ export const Win: FC<Props> = ({ img, title, footer = [], children }) => {
     setProperties(props => ({ ...props,  top: props.top + e.movementY, left: props.left + e.movementX }))
   }, []);
 
-  const currentFooter = descriptor.footer.some(text => text) ? descriptor.footer : footer;
-
   return (
     <Window
-      sx={ fullscreen ? { inset: 5, zIndex: descriptor.pos } : { top, left, width, height, cursor, zIndex: descriptor.pos }}
+      sx={ fullscreen ? { inset: 5, zIndex } : { top, left, width, height, cursor, zIndex }}
       {...useOnResize({
         onCursorChange,
         onResize,
@@ -92,9 +90,7 @@ export const Win: FC<Props> = ({ img, title, footer = [], children }) => {
       </Header>
       <Content>{children}</Content>
       <Footer>
-        <span>{ currentFooter[0] }</span>
-        <span>{ currentFooter[1] }</span>
-        <span>{ currentFooter[2] }</span>
+        { (footer || defaultFooter || []).map((value, index) => <span key={index}>{value}</span>) }
       </Footer>
     </Window>
   );
