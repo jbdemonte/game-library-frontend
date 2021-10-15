@@ -15,14 +15,21 @@ type Props = {
   render: (payload: WinPayload) => ReactElement;
 }
 
-function getMaxPosition(descriptors: IDescriptor[]) {
-  return descriptors.reduce((max, descriptor) => Math.max(descriptor.pos, max), 0);
+function getMaxPosDescriptor(descriptors: IDescriptor[]): IDescriptor | undefined {
+  return descriptors.length ? descriptors.reduce((max, current) => max.pos > current.pos ? max : current) : undefined;
 }
 
-function updateFocusTo(descriptors: IDescriptor[], descriptor: IDescriptor) {
-  const max = getMaxPosition(descriptors);
-  return descriptor.pos === max ? descriptors : descriptors.map(item => item.id === descriptor.id ? {...item, pos: max + 1} : item);
+function getMaxPos(descriptors: IDescriptor[]): number {
+  return getMaxPosDescriptor(descriptors)?.pos || 0;
+}
 
+function updateFocusTo(descriptors: IDescriptor[], id: string) {
+  const focused = getMaxPosDescriptor(descriptors);
+  if (!focused || focused.id === id) {
+    return descriptors;
+  }
+  const max = focused.pos;
+  return descriptors.map(descriptor => descriptor.id === id ? {...descriptor, pos: max + 1} : descriptor);
 }
 
 export const WinManager: FC<Props> = ({ render, children }) => {
@@ -57,12 +64,12 @@ export const WinManager: FC<Props> = ({ render, children }) => {
       setDescriptors(descriptors => {
         const existing = equals ? descriptors.find(descriptor => equals(payload, descriptor.payload)) : undefined;
         if (existing) {
-          return updateFocusTo(descriptors, existing);
+          return updateFocusTo(descriptors, existing.id);
         }
         // add a new descriptor
         return descriptors.concat([{
           id: guid(),
-          pos: 1 + getMaxPosition(descriptors),
+          pos: 1 + getMaxPos(descriptors),
           payload,
           footer: ['', '', '']
         }]);
@@ -71,14 +78,14 @@ export const WinManager: FC<Props> = ({ render, children }) => {
   }), []);
 
   const windowHandlers: Omit<GenericWinProps, 'descriptor' | 'render'> = useMemo(() => ({
-    close: (descriptor: IDescriptor) => {
-      setDescriptors(descriptors => descriptors.filter(item => item.id !== descriptor.id));
+    close: (id: string) => {
+      setDescriptors(descriptors => descriptors.filter(descriptor => descriptor.id !== id));
     },
-    focus: (descriptor: IDescriptor) => {
-      setDescriptors(descriptors => updateFocusTo(descriptors, descriptor));
+    focus: (id: string) => {
+      setDescriptors(descriptors => updateFocusTo(descriptors, id));
     },
-    setFooter: (descriptor: IDescriptor, left?: string, center?: string, right?: string) => {
-      setDescriptors(descriptors => descriptors.map(item => item.id === descriptor.id ? { ...descriptor, footer: [left || '', center || '', right || ''] } : item));
+    setFooter: (id: string, left?: string, center?: string, right?: string) => {
+      setDescriptors(descriptors => descriptors.map(descriptor => descriptor.id === id ? { ...descriptor, footer: [left || '', center || '', right || ''] } : descriptor));
     },
   }), []);
 
@@ -94,22 +101,22 @@ export const WinManager: FC<Props> = ({ render, children }) => {
 
 type GenericWinProps = {
   descriptor: IDescriptor;
-  close: (descriptor: IDescriptor) => void;
-  focus: (descriptor: IDescriptor) => void;
-  setFooter: (descriptor: IDescriptor, left?: string, center?: string, right?: string) => void;
+  close: (id: string) => void;
+  focus: (id: string) => void;
+  setFooter: (id: string, left?: string, center?: string, right?: string) => void;
   render: (payload: WinPayload) => ReactElement;
 }
 
 const GenericWin = ({ descriptor, close, focus, setFooter, render }: GenericWinProps) => {
   const contextValue: WinContextType = useMemo(() => ({
     descriptor,
-    close: close.bind(null, descriptor),
-    focus: focus.bind(null, descriptor),
-    setFooter: setFooter.bind(null, descriptor)
+    close: close.bind(null, descriptor.id),
+    focus: focus.bind(null, descriptor.id),
+    setFooter: setFooter.bind(null, descriptor.id)
   }), [descriptor, close, focus, setFooter]);
   return (
     <WinContext.Provider key={descriptor.id} value={contextValue}>
       { render(descriptor.payload) }
     </WinContext.Provider>
   );
-}
+};
