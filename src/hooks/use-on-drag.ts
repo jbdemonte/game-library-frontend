@@ -5,7 +5,7 @@ type Props = {
   onDragMove: (e: PointerEvent) => void;
 }
 
-export const useOnDrag = ({ onDragMove, draggable }: Props) => {
+export const useOnDrag = ({ onDragMove, draggable = true }: Props) => {
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {

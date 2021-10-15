@@ -1,6 +1,6 @@
-import { Box, styled } from '@mui/material';
-import * as React from 'react';
 import { ElementType, createElement } from 'react';
+import { Box, styled, Theme } from '@mui/material';
+import { SxProps } from '@mui/system';
 
 type BoxStyledProps = {
   iconOutSize: number;
@@ -56,6 +56,7 @@ function boxStyled({ iconOutSize, iconSize }: BoxStyledProps) {
 type Props = {
   label: string;
   img?: string;
+  sx?: SxProps<Theme>;
   onDoubleClick?: () => void;
   onPointerEnter?: () => void;
   onPointerLeave?: () => void;
@@ -63,8 +64,8 @@ type Props = {
 
 export function FileIconStyled({ icon, iconOutSize, iconSize }: BoxStyledProps) {
   const StyledBox = boxStyled({ iconOutSize, iconSize });
-  return ({ img, label, ...events }: Props) => (
-    <StyledBox {...events}>
+  return ({ img, label, ...props }: Props) => (
+    <StyledBox {...props}>
       <div>
         { Boolean(img) && <img src={img} alt={label} /> }
         { icon && createElement(icon) }
