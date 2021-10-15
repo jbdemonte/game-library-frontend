@@ -18,7 +18,7 @@ export const System = ({ systemId }: Props) => {
     setProperties(props => ({ top: props.top + e.movementY, left: props.left + e.movementX }))
   }, []);
 
-  const onDoubleClick = useCallback(() => openNewWindow({ systemId }, { equals: systemWindowDataEquals }), [openNewWindow, systemId]);
+  const onDoubleClick = useCallback(() => openNewWindow({ systemId }, { equals: systemWindowDataEquals, search: true }), [openNewWindow, systemId]);
 
   const system = systemService.get(systemId);
   return (

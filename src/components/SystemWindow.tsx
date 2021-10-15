@@ -10,6 +10,7 @@ import { Rom } from './Rom';
 import { gameWindowDataEquals } from './GameWindow';
 import { WinManagerContext, WinPayload } from '../contexts/win-manager.context';
 import { formatFileSize } from '../tools/file';
+import { WinContext } from '../contexts/win.context';
 
 export type SystemWindowData = {
   systemId: string;
@@ -32,6 +33,7 @@ export const SystemWindow = ({ systemId }: SystemWindowData) => {
   const [content, setContent] = useState<{ scraped: ScrapedGame[], roms: IRom[] }>();
   const { showError } = useContext(ToastContext);
   const { openNewWindow } = useContext(WinManagerContext);
+  const { searched } = useContext(WinContext);
 
   useEffect(() => {
     systemService
@@ -59,13 +61,21 @@ export const SystemWindow = ({ systemId }: SystemWindowData) => {
 
   }, [content]);
 
+  const filterRoms = (roms: IRom[]) => {
+    return searched ? roms.filter(rom => rom.archive.name.toLowerCase().includes(searched)) : roms;
+  }
+
+  const filterScraped = (scrapedGames: ScrapedGame[]) => {
+    return searched ? scrapedGames.filter(scrapedGame => scrapedGame.game.name.includes(searched) || filterRoms(scrapedGame.roms).length) : scrapedGames;
+  }
+
   return (
     <Win title={system.name} img={system.icon ? `${process.env.PUBLIC_URL}/systems/icons/${system.icon}` : ''} footer={footer}>
       { content ? (
         <Box sx={{ position: 'absolute', inset: 1, overflow: 'auto', p: 2 }}>
           <Grid container direction="row" spacing={1}>
-            { content.scraped.map((gameData) => <Game key={gameData.game.id} data={gameData} onDoubleClick={() => openNewWindow({ gameData }, { equals: gameWindowDataEquals })} />)}
-            { content.roms.map((rom) => <Rom key={rom.id} rom={rom} />)}
+            { filterScraped(content.scraped).map((gameData) => <Game key={gameData.game.id} data={gameData} onDoubleClick={() => openNewWindow({ gameData }, { equals: gameWindowDataEquals })} />)}
+            { filterRoms(content.roms).map((rom) => <Rom key={rom.id} rom={rom} />)}
           </Grid>
         </Box>
       ) : <Loading /> }

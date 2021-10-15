@@ -8,21 +8,19 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-const theme = createTheme({
+const darkTheme = createTheme({
   palette: {
+    mode: 'dark',
     background: {
       default: "#1e1f21"
     },
-    text: {
-      primary: "#ffffff"
-    }
-  }
+  },
 });
 
 function App() {
   const { error, toastContextValue, snackbarProps } = useToastContext();
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <ToastContext.Provider value={toastContextValue}>
         <Desktop />

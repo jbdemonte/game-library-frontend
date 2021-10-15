@@ -1,4 +1,4 @@
-import { FC, useCallback, useContext, useState } from 'react';
+import { ChangeEvent, FC, useCallback, useContext, useState } from 'react';
 import { Box, styled } from '@mui/material';
 import { useOnDrag } from '../../hooks/use-on-drag';
 import { useOnResize } from '../../hooks/use-on-resize';
@@ -6,6 +6,7 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Content } from './components/Content';
 import { WinContext } from '../../contexts/win.context';
+import { Search } from './components/Search';
 
 type Props = {
   title: string;
@@ -13,7 +14,7 @@ type Props = {
   footer?: [string, string, string];
 }
 
-const Window = styled(Box)`
+const StyledBox = styled(Box)`
   position: absolute;
   pointer-events: auto;
   border-radius: 10px;
@@ -29,7 +30,7 @@ function randomOffset(size: number, percent: number) {
 }
 
 export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) => {
-  const { footer, zIndex, close, focus } = useContext(WinContext);
+  const { footer, zIndex, close, focus, searching, setSearch } = useContext(WinContext);
   const [resizing, setResizing] = useState(false);
   const [{ top, left, width, height, cursor, fullscreen }, setProperties] = useState(() => {
     const height = window.innerHeight / 2;
@@ -67,8 +68,12 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
     setProperties(props => ({ ...props,  top: props.top + e.movementY, left: props.left + e.movementX }))
   }, []);
 
+  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value.toLowerCase().trim());
+  }, [setSearch]);
+
   return (
-    <Window
+    <StyledBox
       sx={ fullscreen ? { inset: 5, zIndex } : { top, left, width, height, cursor, zIndex }}
       {...useOnResize({
         onCursorChange,
@@ -88,10 +93,13 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
         {Boolean(img) && <img src={img} alt={title} style={{ maxHeight: '18px', width: 'auto', verticalAlign: 'middle', marginRight: '5px'}} />}
         {title}
       </Header>
-      <Content>{children}</Content>
+      <Content>
+        {children}
+        { searching && <Search onChange={onChange} />}
+      </Content>
       <Footer>
         { (footer || defaultFooter || []).map((value, index) => <span key={index}>{value}</span>) }
       </Footer>
-    </Window>
+    </StyledBox>
   );
 };

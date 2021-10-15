@@ -2,10 +2,13 @@ import { createContext } from 'react';
 
 export type WinContextType = {
   zIndex: number;
+  searching?: boolean;
+  searched?: string;
   footer?: [string, string, string];
   close: () => void;
   focus: () => void;
   setFooter: (left?: string, center?: string, right?: string) => void;
+  setSearch: (searched: string) => void;
 }
 
 export const WinContext = createContext<WinContextType>({
@@ -13,4 +16,5 @@ export const WinContext = createContext<WinContextType>({
   close: () => {},
   focus: () => {},
   setFooter: () => {},
+  setSearch: () => {},
 });

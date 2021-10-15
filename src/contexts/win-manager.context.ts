@@ -8,6 +8,7 @@ export type WinPayloadEqualFunction = (payloadA: WinPayload, payloadB: WinPayloa
 
 export type WinOptions = {
   equals?: WinPayloadEqualFunction;
+  search?: boolean;
 }
 
 type WindowManagerContextType = {
