@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from 'react';
+import { FC, useCallback, useContext, useState } from 'react';
 import { Box, styled } from '@mui/material';
 import { useOnDrag } from '../../hooks/use-on-drag';
 import { useOnResize } from '../../hooks/use-on-resize';
@@ -45,9 +45,9 @@ export const Win: FC<Props> = ({ img, title, footer = [], children }) => {
     fullscreen: false
   }});
 
-  const onCursorChange = (cursor: string) => setProperties(props => ({ ...props, cursor }));
+  const onCursorChange = useCallback((cursor: string) => setProperties(props => ({ ...props, cursor })), []);
 
-  const onResize = (offset: { top: number, left: number, bottom: number, right: number }) => {
+  const onResize = useCallback((offset: { top: number, left: number, bottom: number, right: number }) => {
     setProperties(props => ({
       ...props,
       top: props.top + offset.top,
@@ -55,11 +55,17 @@ export const Win: FC<Props> = ({ img, title, footer = [], children }) => {
       height: Math.max(250, props.height + offset.bottom - offset.top),
       width: Math.max(250, props.width + offset.right - offset.left),
     }))
-  };
+  }, []);
 
-  const toggleFullScreen = () => {
+  const toggleFullScreen = useCallback(() => {
     setProperties(props => ({ ...props, fullscreen: !props.fullscreen }));
-  };
+  }, []);
+
+  const onPointerDown = useCallback(() => focus(), [focus]);
+
+  const onDragMove = useCallback((e: PointerEvent) => {
+    setProperties(props => ({ ...props,  top: props.top + e.movementY, left: props.left + e.movementX }))
+  }, []);
 
   const currentFooter = descriptor.footer.some(text => text) ? descriptor.footer : footer;
 
@@ -71,7 +77,7 @@ export const Win: FC<Props> = ({ img, title, footer = [], children }) => {
         onResize,
         onChange: setResizing,
         resizable: !fullscreen,
-        onPointerDown: () => focus(),
+        onPointerDown: onPointerDown,
       })}
     >
       <Header
@@ -79,18 +85,16 @@ export const Win: FC<Props> = ({ img, title, footer = [], children }) => {
         onDoubleClick={toggleFullScreen}
         onCloseClick={close}
         onFullScreenClick={toggleFullScreen}
-        {...useOnDrag({ draggable: !fullscreen && !resizing, onDragMove: (e) => setProperties(props => ({ ...props, top: props.top + e.movementY, left: props.left + e.movementX }))})}
+        {...useOnDrag({ draggable: !fullscreen && !resizing, onDragMove })}
       >
-        { Boolean(img) && <img src={img} alt={title} style={{ maxHeight: '18px', width: 'auto', verticalAlign: 'middle', marginRight: '5px'}} />}
+        {Boolean(img) && <img src={img} alt={title} style={{ maxHeight: '18px', width: 'auto', verticalAlign: 'middle', marginRight: '5px'}} />}
         {title}
       </Header>
       <Content>{children}</Content>
       <Footer>
-        <Box sx={{ display: 'flex', fontSize: '12px', height: 1, alignItems: 'center'}}>
-          <Box sx={{ textAlign: 'left'}}>{ currentFooter[0]}</Box>
-          <Box sx={{ textAlign: 'center', flexGrow: 1}}>{ currentFooter[1] }</Box>
-          <Box sx={{ textAlign: 'right'}}>{ currentFooter[2] }</Box>
-        </Box>
+        <span>{ currentFooter[0] }</span>
+        <span>{ currentFooter[1] }</span>
+        <span>{ currentFooter[2] }</span>
       </Footer>
     </Window>
   );

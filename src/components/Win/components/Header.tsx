@@ -1,10 +1,8 @@
-import { Box, styled, Typography } from '@mui/material';
-import { Part } from './Part';
-import { Space } from './Space';
+import { FC, PointerEventHandler } from 'react';
+import { Box, styled } from '@mui/material';
 import { FullscreenButton } from './buttons/FullscreenButton';
 import { CloseFullscreenButton } from './buttons/CloseFullscreenButton';
 import { CloseButton } from './buttons/CloseButton';
-import { FC, PointerEventHandler } from 'react';
 
 const StyledHeader = styled(Box)`
   padding: 2px 10px;
@@ -12,6 +10,24 @@ const StyledHeader = styled(Box)`
   height: 30px;
   display: flex;
   align-items: center;
+  
+  > div {
+    display: flex;
+    align-items: center;
+  }
+  
+  > div:first-of-type {
+    font-size: 14px;
+    user-select: none;
+  }
+  
+  > div:nth-of-type(2) {
+    flex-grow: 1;
+  }
+  
+  > div:last-of-type {
+    gap: 10px;
+  }
 `;
 
 type Props = {
@@ -25,13 +41,13 @@ type Props = {
 export const Header: FC<Props> = ({ fullscreen, onFullScreenClick, onDoubleClick, onPointerDown, onCloseClick, children }) => {
   return (
     <StyledHeader onDoubleClick={onDoubleClick} onPointerDown={onPointerDown}>
-      <Part><Typography sx={{ fontSize: 14, userSelect: 'none'}}>{children}</Typography></Part>
-      <Space />
-      <Part>
+      <div>{children}</div>
+      <div />
+      <div>
         { !fullscreen && <FullscreenButton onClick={onFullScreenClick}/> }
         { fullscreen && <CloseFullscreenButton onClick={onFullScreenClick}/> }
         <CloseButton onClick={onCloseClick} />
-      </Part>
+      </div>
     </StyledHeader>
   );
 }

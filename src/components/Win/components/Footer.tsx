@@ -7,4 +7,21 @@ export const Footer = styled(Box)`
   background: #202122;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+
+  display: flex;;
+  font-size: 12px;
+  align-items: center;
+  
+  > span:first-of-type {
+    text-align: left;
+  }
+  
+  > span:nth-of-type(2) {
+    text-align: center;
+    flex-grow: 1;
+  }
+  
+  > span:last-of-type {
+    text-align: right;
+  }
 `;
