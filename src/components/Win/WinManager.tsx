@@ -68,7 +68,7 @@ export const WinManager: FC<Props> = ({ render, children }) => {
       setDescriptors(descriptors => focusedDescriptor(descriptors, id));
     },
     setFooter: (id: string, left: string = '', center: string = '', right: string = '') => {
-      setDescriptors(descriptors => descriptors.map(descriptor => descriptor.id === id ? { ...descriptor, footer: (left || center || right) ? [left, center, right] : undefined } : descriptor));
+      updateStateAndSetDescriptors(setDescriptors, { footer: (left || center || right) ? [left, center, right] : undefined }, id);
     },
     setSearched: (id: string, searched: string = '') => {
       updateStateAndSetDescriptors(setDescriptors, { searched }, id);
@@ -101,7 +101,7 @@ const GenericWin = ({ descriptor, close, focus, setFooter, setSearched, render }
     zIndex: descriptor.zIndex,
     close: close.bind(null, descriptor.id),
     focus: focus.bind(null, descriptor.id),
-    footer: descriptor.footer ? descriptor.footer.slice() as [string, string, string] : undefined,
+    footer: descriptor.state.footer ? [...descriptor.state.footer] : undefined,
     setFooter: setFooter.bind(null, descriptor.id),
     setSearched: setSearched.bind(null, descriptor.id)
   }), [descriptor, close, focus, setFooter, setSearched]);

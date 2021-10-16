@@ -4,11 +4,11 @@ export interface IDescriptor {
   id: string;
   zIndex: number;
   payload: WinPayload;
-  footer?: [string, string, string];
   options: {
     search?: boolean;
   };
   state: {
+    footer?: [string, string, string];
     searching?: boolean;
     searched?: string;
   }
