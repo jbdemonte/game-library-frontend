@@ -4,10 +4,8 @@ import { WinContext, WinContextType } from '../../contexts/win.context';
 import { guid } from '../../tools/guid';
 import { WinManagerContext, WinOptions, WinPayload } from '../../contexts/win-manager.context';
 import { IDescriptor } from './interfaces/descriptor.interface';
-import { getMaxPos } from './descriptors-tools/position';
-import { setMaxPosTo } from './tools/descriptors';
-import { setMaxPosSearching } from './descriptors-tools/search';
-import { removeMaxPosDescriptor } from './descriptors-tools/window';
+import { getMaxZIndex, focusedDescriptor } from './tools/descriptors';
+import { removeOneAndSetDescriptors, updateStateAndSetDescriptors } from './tools/set-descriptors';
 
 type Props = {
   render: (payload: WinPayload) => ReactElement;
@@ -24,14 +22,14 @@ export const WinManager: FC<Props> = ({ render, children }) => {
 
       // command + F or ctrl + F
       if (event.key === 'f' && (event.metaKey || event.ctrlKey)) {
-        setMaxPosSearching(setDescriptors, true);
+        updateStateAndSetDescriptors(setDescriptors, { searching: true }, '', (descriptor) => descriptor.options.search && !descriptor.state.searching );
         event.preventDefault();
       }
 
       if (event.key === 'Escape') {
-        const updated = setMaxPosSearching(setDescriptors, false);
+        const updated = updateStateAndSetDescriptors(setDescriptors, { searching: false }, '', (descriptor) => descriptor.options.search && descriptor.state.searching );
         if (!updated) {
-          removeMaxPosDescriptor(setDescriptors);
+          removeOneAndSetDescriptors(setDescriptors);
         }
         event.preventDefault();
       }
@@ -48,12 +46,12 @@ export const WinManager: FC<Props> = ({ render, children }) => {
       setDescriptors(descriptors => {
         const existing = equals ? descriptors.find(descriptor => equals(payload, descriptor.payload)) : undefined;
         if (existing) {
-          return setMaxPosTo(descriptors, existing.id);
+          return focusedDescriptor(descriptors, existing.id);
         }
         // add a new descriptor
         return descriptors.concat([{
           id: guid(),
-          pos: 1 + getMaxPos(descriptors),
+          zIndex: 1 + getMaxZIndex(descriptors),
           payload,
           options,
           state: {},
@@ -64,16 +62,16 @@ export const WinManager: FC<Props> = ({ render, children }) => {
 
   const windowHandlers: Omit<GenericWinProps, 'descriptor' | 'render'> = useMemo(() => ({
     close: (id: string) => {
-      setDescriptors(descriptors => descriptors.filter(descriptor => descriptor.id !== id));
+      removeOneAndSetDescriptors(setDescriptors, id);
     },
     focus: (id: string) => {
-      setDescriptors(descriptors => setMaxPosTo(descriptors, id));
+      setDescriptors(descriptors => focusedDescriptor(descriptors, id));
     },
     setFooter: (id: string, left: string = '', center: string = '', right: string = '') => {
       setDescriptors(descriptors => descriptors.map(descriptor => descriptor.id === id ? { ...descriptor, footer: (left || center || right) ? [left, center, right] : undefined } : descriptor));
     },
-    setSearch: (id: string, searched: string = '') => {
-      setDescriptors(descriptors => descriptors.map(descriptor => descriptor.id === id ? { ...descriptor, state: {...descriptor.state, searched} } : descriptor));
+    setSearched: (id: string, searched: string = '') => {
+      updateStateAndSetDescriptors(setDescriptors, { searched }, id);
     },
   }), []);
 
@@ -92,21 +90,21 @@ type GenericWinProps = {
   close: (id: string) => void;
   focus: (id: string) => void;
   setFooter: (id: string, left?: string, center?: string, right?: string) => void;
-  setSearch: (id: string, searched: string) => void;
+  setSearched: (id: string, searched: string) => void;
   render: (payload: WinPayload) => ReactElement;
 }
 
-const GenericWin = ({ descriptor, close, focus, setFooter, setSearch, render }: GenericWinProps) => {
+const GenericWin = ({ descriptor, close, focus, setFooter, setSearched, render }: GenericWinProps) => {
   const contextValue: WinContextType = useMemo(() => ({
     searching: descriptor.state.searching,
     searched: descriptor.state.searched,
-    zIndex: descriptor.pos,
+    zIndex: descriptor.zIndex,
     close: close.bind(null, descriptor.id),
     focus: focus.bind(null, descriptor.id),
     footer: descriptor.footer ? descriptor.footer.slice() as [string, string, string] : undefined,
     setFooter: setFooter.bind(null, descriptor.id),
-    setSearch: setSearch.bind(null, descriptor.id)
-  }), [descriptor, close, focus, setFooter, setSearch]);
+    setSearched: setSearched.bind(null, descriptor.id)
+  }), [descriptor, close, focus, setFooter, setSearched]);
   return (
     <WinContext.Provider key={descriptor.id} value={contextValue}>
       { render(descriptor.payload) }

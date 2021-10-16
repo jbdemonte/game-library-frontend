@@ -30,7 +30,7 @@ function randomOffset(size: number, percent: number) {
 }
 
 export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) => {
-  const { footer, zIndex, close, focus, searching, setSearch } = useContext(WinContext);
+  const { footer, zIndex, close, focus, searching, setSearched } = useContext(WinContext);
   const [resizing, setResizing] = useState(false);
   const [{ top, left, width, height, cursor, fullscreen }, setProperties] = useState(() => {
     const height = window.innerHeight / 2;
@@ -69,8 +69,8 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
   }, []);
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value.toLowerCase().trim());
-  }, [setSearch]);
+    setSearched(e.target.value.toLowerCase().trim());
+  }, [setSearched]);
 
   return (
     <StyledBox

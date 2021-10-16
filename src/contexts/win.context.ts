@@ -8,7 +8,7 @@ export type WinContextType = {
   close: () => void;
   focus: () => void;
   setFooter: (left?: string, center?: string, right?: string) => void;
-  setSearch: (searched: string) => void;
+  setSearched: (searched: string) => void;
 }
 
 export const WinContext = createContext<WinContextType>({
@@ -16,5 +16,5 @@ export const WinContext = createContext<WinContextType>({
   close: () => {},
   focus: () => {},
   setFooter: () => {},
-  setSearch: () => {},
+  setSearched: () => {},
 });
