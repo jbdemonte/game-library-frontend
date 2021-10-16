@@ -3,43 +3,14 @@ import { Box } from '@mui/material';
 import { WinContext, WinContextType } from '../../contexts/win.context';
 import { guid } from '../../tools/guid';
 import { WinManagerContext, WinOptions, WinPayload } from '../../contexts/win-manager.context';
-
-interface IDescriptor {
-  id: string;
-  pos: number;
-  payload: WinPayload;
-  footer?: [string, string, string];
-  options: {
-    search?: boolean;
-  };
-  state: {
-    searching?: boolean;
-    searched?: string;
-  }
-}
+import { IDescriptor } from './interfaces/descriptor.interface';
+import { getMaxPos } from './descriptors-tools/position';
+import { setMaxPosTo } from './tools/descriptors';
+import { setMaxPosSearching } from './descriptors-tools/search';
+import { removeMaxPosDescriptor } from './descriptors-tools/window';
 
 type Props = {
   render: (payload: WinPayload) => ReactElement;
-}
-
-function getMaxPosDescriptor(descriptors: IDescriptor[]): IDescriptor {
-  if (!descriptors.length) {
-    throw new Error('empty descriptor list');
-  }
-  return descriptors.reduce((max, current) => max.pos > current.pos ? max : current);
-}
-
-function getMaxPos(descriptors: IDescriptor[]): number {
-  return descriptors.length ? getMaxPosDescriptor(descriptors).pos : 0;
-}
-
-function updateFocusTo(descriptors: IDescriptor[], id: string) {
-  const focused = getMaxPosDescriptor(descriptors);
-  if (focused.id === id) {
-    return descriptors;
-  }
-  const max = focused.pos;
-  return descriptors.map(descriptor => descriptor.id === id ? {...descriptor, pos: max + 1} : descriptor);
 }
 
 export const WinManager: FC<Props> = ({ render, children }) => {
@@ -51,31 +22,18 @@ export const WinManager: FC<Props> = ({ render, children }) => {
         return; // Do nothing if the event was already processed
       }
 
+      // command + F or ctrl + F
       if (event.key === 'f' && (event.metaKey || event.ctrlKey)) {
-        setDescriptors(descriptors => {
-          if (descriptors.length) {
-            event.preventDefault();
-            const descriptor = getMaxPosDescriptor(descriptors);
-            if (descriptor.options.search) {
-              return descriptors.map(item => item === descriptor ? {...descriptor, state: {...descriptor.state, searching: true}} : item);
-            }
-          }
-          return descriptors;
-        });
+        setMaxPosSearching(setDescriptors, true);
+        event.preventDefault();
       }
 
       if (event.key === 'Escape') {
-        setDescriptors(descriptors => {
-          if (descriptors.length) {
-            event.preventDefault();
-            const descriptor = getMaxPosDescriptor(descriptors);
-            if (descriptor.state.searching) {
-              return descriptors.map(item => item === descriptor ? {...descriptor, state: {...descriptor.state, searching: false, searched: ''}} : item);
-            }
-            return descriptors.filter(current => current !== descriptor);
-          }
-          return descriptors;
-        });
+        const updated = setMaxPosSearching(setDescriptors, false);
+        if (!updated) {
+          removeMaxPosDescriptor(setDescriptors);
+        }
+        event.preventDefault();
       }
     }
 
@@ -90,7 +48,7 @@ export const WinManager: FC<Props> = ({ render, children }) => {
       setDescriptors(descriptors => {
         const existing = equals ? descriptors.find(descriptor => equals(payload, descriptor.payload)) : undefined;
         if (existing) {
-          return updateFocusTo(descriptors, existing.id);
+          return setMaxPosTo(descriptors, existing.id);
         }
         // add a new descriptor
         return descriptors.concat([{
@@ -109,7 +67,7 @@ export const WinManager: FC<Props> = ({ render, children }) => {
       setDescriptors(descriptors => descriptors.filter(descriptor => descriptor.id !== id));
     },
     focus: (id: string) => {
-      setDescriptors(descriptors => updateFocusTo(descriptors, id));
+      setDescriptors(descriptors => setMaxPosTo(descriptors, id));
     },
     setFooter: (id: string, left: string = '', center: string = '', right: string = '') => {
       setDescriptors(descriptors => descriptors.map(descriptor => descriptor.id === id ? { ...descriptor, footer: (left || center || right) ? [left, center, right] : undefined } : descriptor));
