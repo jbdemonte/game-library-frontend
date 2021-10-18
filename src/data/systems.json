@@ -6,7 +6,7 @@
     "section": "computers"
   },
   {
-    "id": "amstradcpc",
+    "id": "cpc",
     "name": "Amstrad CPC",
     "picture": "Amstrad CPC.png",
     "section": "computers"
@@ -300,7 +300,7 @@
     "icon": "pcfx.png"
   },
   {
-    "id": "pcengine",
+    "id": "pce",
     "name": "PC Engine / TurboGrafx 16",
     "picture": "PC Engine.png",
     "pictures": [
@@ -312,7 +312,7 @@
     "section": "consoles"
   },
   {
-    "id": "pcenginecd",
+    "id": "pcecd",
     "name": "PC Engine CD",
     "picture": "PC Engine Super CDRom2.png",
     "icon": "pcenginecd.png",
@@ -381,7 +381,7 @@
     "section": "consoles"
   },
   {
-    "id": "mastersystem",
+    "id": "sms",
     "name": "Sega Master System",
     "picture": "Sega Master System 2.png",
     "pictures": [
@@ -393,7 +393,7 @@
     "section": "consoles"
   },
   {
-    "id": "sg-1000",
+    "id": "sg1000",
     "name": "Sega SG-1000",
     "picture": "Sega SG-1000.png",
     "icon": "sg1000.png",
@@ -465,14 +465,14 @@
     "section": "handhelds"
   },
   {
-    "id": "wonderswan",
+    "id": "wswan",
     "name": "Wonder Swan",
     "picture": "Bandai Wonder Swan.png",
     "icon": "wonderswan.png",
     "section": "handhelds"
   },
   {
-    "id": "wonderswancolor",
+    "id": "wswanc",
     "name": "Wonder Swan Color",
     "picture": "Bandai Wonder Swan Color.png",
     "section": "handhelds"
