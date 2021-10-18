@@ -32,3 +32,18 @@ export function updateStateAndSetDescriptors<T extends Partial<IDescriptor['stat
   });
   return updated;
 }
+
+export function rotateAndSetDescriptors(setDescriptors: Dispatch<SetStateAction<IDescriptor[]>>, direction: -1 | 1) {
+  setDescriptors(descriptors => {
+    if (descriptors.length > 1) {
+      const items = descriptors.slice().sort((a, b) => a.zIndex - b.zIndex);
+      if (direction < 0) {
+        items.push(items.shift()!);
+      } else {
+        items.unshift(items.pop()!);
+      }
+      return items.map((descriptor, index) => ({...descriptor, zIndex: index + 1}));
+    }
+    return descriptors;
+  });
+}

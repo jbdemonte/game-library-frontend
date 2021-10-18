@@ -5,7 +5,7 @@ import { guid } from '../../tools/guid';
 import { WinManagerContext, WinOptions, WinPayload } from '../../contexts/win-manager.context';
 import { IDescriptor } from './interfaces/descriptor.interface';
 import { getMaxZIndex, focusedDescriptor } from './tools/descriptors';
-import { removeOneAndSetDescriptors, updateStateAndSetDescriptors } from './tools/set-descriptors';
+import { removeOneAndSetDescriptors, rotateAndSetDescriptors, updateStateAndSetDescriptors } from './tools/set-descriptors';
 
 type Props = {
   render: (payload: WinPayload) => ReactElement;
@@ -31,6 +31,11 @@ export const WinManager: FC<Props> = ({ render, children }) => {
         if (!updated) {
           removeOneAndSetDescriptors(setDescriptors);
         }
+        event.preventDefault();
+      }
+
+      if (event.key === 'Tab') {
+        rotateAndSetDescriptors(setDescriptors, event.shiftKey || event.metaKey ? -1 : 1);
         event.preventDefault();
       }
     }
