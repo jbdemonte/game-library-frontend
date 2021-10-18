@@ -13,7 +13,6 @@ import { IGame } from '../interfaces/game.interface';
 import { Video } from './Video';
 import { RomTable } from './RomTable';
 import { Gallery } from './MediaGallery';
-import { Image } from './Image';
 import { WinPayload } from '../contexts/win-manager.context';
 
 export type GameWindowData = {
@@ -59,7 +58,7 @@ export const GameWindow = ({ gameData: { game, roms } }: GameWindowData) => {
   const icon = useMemo(() => getDefaultMedia(game.medias), [game]);
 
   return (
-    <Win title={game.name} img={icon ? `${process.env.REACT_APP_API_URL}${icon.url}` : ''}>
+    <Win title={game.name} img={icon?.url}>
       <Box sx={{ position: 'absolute', inset: 1, overflow: 'auto', p: 2 }}>
         <Box sx={{ width: 1, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
           <Box sx={{ width: 1, minHeight: '250px', display: 'flex', marginBottom: '10px', justifyContent: 'center', position: 'relative'}}>
@@ -70,7 +69,7 @@ export const GameWindow = ({ gameData: { game, roms } }: GameWindowData) => {
                   <CancelIcon sx={{ position: 'absolute', width: '30px', height: '30px', top: '-15px', right: '-15px', zIndex: 5, color: '#808080', cursor: 'pointer', '&:hover': { color: '#fff' }}} onClick={() => setShowVideo(false)} />
                 </Box>
               :
-                <Image
+                <img
                   src={media?.url || `${process.env.PUBLIC_URL}/systems/icons/missing.png`}
                   style={{ width: '50%', height: 'auto', minHeight: 100, maxHeight: 300, minWidth: 100, maxWidth: 300, objectFit: 'contain'}}
                   alt={game.name}

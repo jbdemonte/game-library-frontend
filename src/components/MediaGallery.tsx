@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { Box } from '@mui/material';
-import { Image } from './Image';
 import { IMedia } from '../interfaces/game.interface';
 import { getMedia, MediaType } from '../tools/media';
 
@@ -21,7 +20,7 @@ export const Gallery = ({ medias, onClick } : { medias: IMedia[], onClick: (medi
   return (
     <Box>
       { selection.map(media => (
-        <Image
+        <img
           key={media.url}
           src={media.url}
           style={{ width: '45px', height: 'auto', margin: '0 5px', cursor: 'pointer' }}

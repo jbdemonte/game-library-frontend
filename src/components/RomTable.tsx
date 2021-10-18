@@ -20,7 +20,7 @@ export const RomTable = ({ roms }: { roms: IRom[] }) => {
           {roms.map((rom) => (
             <TableRow key={rom.id} sx={{ '&:last-child td, &:last-child th': { border: 0 }, ' &:hover': { backgroundColor: '#1d1e1f'} }}>
               <TableCell component="th" scope="row">
-                <Link underline="none" href={`${process.env.REACT_APP_API_URL}${rom.archive.url}`}>
+                <Link underline="none" href={rom.archive.url}>
                   {rom.archive.name}
                 </Link>
               </TableCell>
