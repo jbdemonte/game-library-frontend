@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import PeopleIcon from '@mui/icons-material/People';
@@ -56,8 +56,10 @@ export const GameWindow = ({ gameData: { game, roms } }: GameWindowData) => {
   const [media, setMedia] = useState(() => getDefaultMedia(game.medias))
   const video = getVideoMedia(game.medias);
 
+  const icon = useMemo(() => getDefaultMedia(game.medias), [game]);
+
   return (
-    <Win title={game.name}>
+    <Win title={game.name} img={icon ? `${process.env.REACT_APP_API_URL}${icon.url}` : ''}>
       <Box sx={{ position: 'absolute', inset: 1, overflow: 'auto', p: 2 }}>
         <Box sx={{ width: 1, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
           <Box sx={{ width: 1, minHeight: '250px', display: 'flex', marginBottom: '10px', justifyContent: 'center', position: 'relative'}}>
