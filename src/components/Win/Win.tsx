@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useCallback, useContext, useState } from 'react';
+import { ChangeEvent, FC, useCallback, useContext, useEffect, useState } from 'react';
 import { Box, styled, Typography } from '@mui/material';
 import { useOnDrag } from '../../hooks/use-on-drag';
 import { useOnResize } from '../../hooks/use-on-resize';
@@ -30,6 +30,8 @@ function randomOffset(size: number, percent: number) {
   return sign * Math.floor((size * percent / 100) * Math.random());
 }
 
+const WinMinSize = 250;
+
 export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) => {
   const { footer, zIndex, close, focus, searching, setSearched } = useContext(WinContext);
   const [resizing, setResizing] = useState(false);
@@ -51,8 +53,6 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
 
   const onResize = useCallback((offset: { top: number, left: number, bottom: number, right: number }) => {
     setProperties(props => {
-      const minSize = 250;
-
       const updated = {
         ...props,
         top : props.top + offset.top,
@@ -74,19 +74,19 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
       }
 
       // respect min height
-      if (updated.height < minSize) {
+      if (updated.height < WinMinSize) {
         if (offset.top) {
-          updated.top -= minSize - updated.height;
+          updated.top -= WinMinSize - updated.height;
         }
-        updated.height = minSize;
+        updated.height = WinMinSize;
       }
 
       // respect min width
-      if (updated.width < minSize) {
+      if (updated.width < WinMinSize) {
         if (offset.left) {
-          updated.left -= minSize - updated.width;
+          updated.left -= WinMinSize - updated.width;
         }
-        updated.width = minSize;
+        updated.width = WinMinSize;
       }
 
       // keep left side in the window
@@ -120,6 +120,34 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setSearched(e.target.value.toLowerCase().trim());
   }, [setSearched]);
+
+  // Resize the box when the window size change (reduce it size, and move its position)
+  useEffect(() => {
+    const onWindowResize = () => {
+      setProperties(props => {
+        let { top, left, width, height } = props;
+        if (left + width > window.innerWidth) {
+          width = window.innerWidth - left;
+          if (width < WinMinSize) {
+            left = Math.max(0, left - (WinMinSize - width));
+            width = WinMinSize;
+          }
+        }
+        if (top + height > window.innerHeight) {
+          height = window.innerHeight - top;
+          if (height < WinMinSize) {
+            top = Math.max(0, top - (WinMinSize - height));
+            height = WinMinSize;
+          }
+        }
+        const updated = props.top !== top || props.left !== left || props.width !== width || props.height !== height;
+        return updated ? {...props, top, left, width, height } : props;
+      });
+    };
+    
+    window.addEventListener('resize', onWindowResize);
+    return () => window.removeEventListener('resize', onWindowResize);
+  }, []);
 
   return (
     <StyledBox
