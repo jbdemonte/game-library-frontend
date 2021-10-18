@@ -65,8 +65,8 @@ export const useOnResize = ({ onCursorChange, onResize, onChange, resizable, onP
       }
     };
 
-    return resizable ? { onPointerMove, onPointerDown } : {};
-  }, [onCursorChange, resizable, onPointerDownParent]);
+    return resizable && !resizing ? { onPointerMove, onPointerDown } : {};
+  }, [onCursorChange, onPointerDownParent, resizable, resizing]);
 }
 
 function getActiveSides(e: React.PointerEvent<HTMLElement>) {
