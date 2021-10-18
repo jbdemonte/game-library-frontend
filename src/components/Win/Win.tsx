@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useCallback, useContext, useState } from 'react';
-import { Box, styled } from '@mui/material';
+import { Box, styled, Typography } from '@mui/material';
 import { useOnDrag } from '../../hooks/use-on-drag';
 import { useOnResize } from '../../hooks/use-on-resize';
 import { Header } from './components/Header';
@@ -139,15 +139,15 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
         onFullScreenClick={toggleFullScreen}
         {...useOnDrag({ draggable: !fullscreen && !resizing, onDragMove })}
       >
-        {Boolean(img) && <img src={img} alt={title} style={{ maxHeight: '18px', width: 'auto', verticalAlign: 'middle', marginRight: '5px'}} />}
-        {title}
+        {Boolean(img) && <img src={img} alt={title} />}
+        <Typography noWrap>{title}</Typography>
       </Header>
       <Content>
         {children}
         { searching && <Search onChange={onChange} />}
       </Content>
       <Footer>
-        { (footer || defaultFooter || []).map((value, index) => <span key={index}>{value}</span>) }
+        { (footer || defaultFooter || []).map((value, index) => <Typography key={index} noWrap>{value}</Typography>) }
       </Footer>
     </StyledBox>
   );

@@ -12,16 +12,22 @@ export const Footer = styled(Box)`
   font-size: 12px;
   align-items: center;
   
-  > span:first-of-type {
-    text-align: left;
+  * {
+    font-size: 12px;
   }
   
-  > span:nth-of-type(2) {
+  > *:first-of-type {
+    text-align: left;
+    max-width: 35%;
+  }
+  
+  > *:nth-of-type(2) {
     text-align: center;
     flex-grow: 1;
   }
   
-  > span:last-of-type {
+  > *:last-of-type {
     text-align: right;
+    max-width: 25%;
   }
 `;

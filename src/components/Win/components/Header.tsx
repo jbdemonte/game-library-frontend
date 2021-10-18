@@ -19,6 +19,16 @@ const StyledHeader = styled(Box)`
   > div:first-of-type {
     font-size: 14px;
     user-select: none;
+    max-width: 80%;
+    img {
+      max-height: 18px;
+      width: auto;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+    * {
+      font-size: 14px;
+    }
   }
   
   > div:nth-of-type(2) {
