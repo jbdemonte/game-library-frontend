@@ -49,14 +49,14 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
     fullscreen: false
   }});
 
-  const onCursorChange = useCallback((cursor: string) => setProperties(props => ({ ...props, cursor })), []);
+  const onCursorChange = useCallback((cursor: string) => setProperties(properties => ({ ...properties, cursor })), []);
 
   const onResize = useCallback((offset: { top: number, left: number, bottom: number, right: number }) => {
-    setProperties(props => {
-      let top = props.top + offset.top;
-      let left = props.left + offset.left;
-      let height = props.height + offset.bottom - offset.top;
-      let width = props.width + offset.right - offset.left;
+    setProperties(properties => {
+      let top = properties.top + offset.top;
+      let left = properties.left + offset.left;
+      let height = properties.height + offset.bottom - offset.top;
+      let width = properties.width + offset.right - offset.left;
 
       // keep top side in the window
       if (top < 0) {
@@ -96,23 +96,23 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
         height = window.innerHeight - top;
       }
 
-      const updated = {...props, top, left, width, height };
+      const updated = {...properties, top, left, width, height };
 
-      return arePropertiesEquals(props, updated) ? props : updated;
+      return arePropertiesEquals(properties, updated) ? properties : updated;
     });
   }, []);
 
   const toggleFullScreen = useCallback(() => {
-    setProperties(props => ({ ...props, fullscreen: !props.fullscreen }));
+    setProperties(properties => ({ ...properties, fullscreen: !properties.fullscreen }));
   }, []);
 
   const onPointerDown = useCallback(() => focus(), [focus]);
 
   const onDragMove = useCallback((e: PointerEvent) => {
-    setProperties(props => ({
-      ...props,
-      top: minMax(0, props.top + e.movementY, window.innerHeight - props.height),
-      left: minMax(0, props.left + e.movementX, window.innerWidth - props.width),
+    setProperties(properties => ({
+      ...properties,
+      top: minMax(0, properties.top + e.movementY, window.innerHeight - properties.height),
+      left: minMax(0, properties.left + e.movementX, window.innerWidth - properties.width),
     }))
   }, []);
 
@@ -123,8 +123,8 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
   // Resize the box when the window size change (reduce it size, and move its position)
   useEffect(() => {
     const onWindowResize = () => {
-      setProperties(props => {
-        let { top, left, width, height } = props;
+      setProperties(properties => {
+        let { top, left, width, height } = properties;
         if (left + width > window.innerWidth) {
           width = window.innerWidth - left;
           if (width < WinMinSize) {
@@ -139,8 +139,8 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
             height = WinMinSize;
           }
         }
-        const updated = {...props, top, left, width, height };
-        return arePropertiesEquals(props, updated) ? props : updated;
+        const updated = {...properties, top, left, width, height };
+        return arePropertiesEquals(properties, updated) ? properties : updated;
       });
     };
     
