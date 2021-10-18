@@ -7,6 +7,7 @@ import { Footer } from './components/Footer';
 import { Content } from './components/Content';
 import { WinContext } from '../../contexts/win.context';
 import { Search } from './components/Search';
+import { minMax } from './tools/min-max';
 
 type Props = {
   title: string;
@@ -49,13 +50,57 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
   const onCursorChange = useCallback((cursor: string) => setProperties(props => ({ ...props, cursor })), []);
 
   const onResize = useCallback((offset: { top: number, left: number, bottom: number, right: number }) => {
-    setProperties(props => ({
-      ...props,
-      top: props.top + offset.top,
-      left: props.left + offset.left,
-      height: Math.max(250, props.height + offset.bottom - offset.top),
-      width: Math.max(250, props.width + offset.right - offset.left),
-    }))
+    setProperties(props => {
+      const minSize = 250;
+
+      const updated = {
+        ...props,
+        top : props.top + offset.top,
+        left: props.left + offset.left,
+        height: props.height + offset.bottom - offset.top,
+        width: props.width + offset.right - offset.left,
+      };
+
+      // keep top side in the window
+      if (updated.top < 0) {
+        updated.height += updated.top;
+        updated.top = 0;
+      }
+
+      // keep left side in the window
+      if (updated.left < 0) {
+        updated.width += updated.left;
+        updated.left = 0;
+      }
+
+      // respect min height
+      if (updated.height < minSize) {
+        if (offset.top) {
+          updated.top -= minSize - updated.height;
+        }
+        updated.height = minSize;
+      }
+
+      // respect min width
+      if (updated.width < minSize) {
+        if (offset.left) {
+          updated.left -= minSize - updated.width;
+        }
+        updated.width = minSize;
+      }
+
+      // keep left side in the window
+      if (updated.left + updated.width > window.innerWidth) {
+        updated.width = window.innerWidth - updated.left;
+      }
+
+      // keep bottom side in the window
+      if (updated.top + updated.height > window.innerHeight) {
+        updated.height = window.innerHeight - updated.top;
+      }
+
+      return updated;
+    });
   }, []);
 
   const toggleFullScreen = useCallback(() => {
@@ -65,7 +110,11 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
   const onPointerDown = useCallback(() => focus(), [focus]);
 
   const onDragMove = useCallback((e: PointerEvent) => {
-    setProperties(props => ({ ...props,  top: props.top + e.movementY, left: props.left + e.movementX }))
+    setProperties(props => ({
+      ...props,
+      top: minMax(0, props.top + e.movementY, window.innerHeight - props.height),
+      left: minMax(0, props.left + e.movementX, window.innerWidth - props.width),
+    }))
   }, []);
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
