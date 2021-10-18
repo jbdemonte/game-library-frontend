@@ -14,7 +14,11 @@ export type SystemStatus = {
 function getSystem(id: string): ISystem {
   const system = (systems as ISystem[]).find(system => system.id === id);
   if (!system) {
-    throw new Error(`unknown system ${id}`);
+    return {
+      id,
+      name: id,
+      section: 'others',
+    }
   }
   return system;
 }
