@@ -53,53 +53,52 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
 
   const onResize = useCallback((offset: { top: number, left: number, bottom: number, right: number }) => {
     setProperties(props => {
-      const updated = {
-        ...props,
-        top : props.top + offset.top,
-        left: props.left + offset.left,
-        height: props.height + offset.bottom - offset.top,
-        width: props.width + offset.right - offset.left,
-      };
+      let top = props.top + offset.top;
+      let left = props.left + offset.left;
+      let height = props.height + offset.bottom - offset.top;
+      let width = props.width + offset.right - offset.left;
 
       // keep top side in the window
-      if (updated.top < 0) {
-        updated.height += updated.top;
-        updated.top = 0;
+      if (top < 0) {
+        height += top;
+        top = 0;
       }
 
       // keep left side in the window
-      if (updated.left < 0) {
-        updated.width += updated.left;
-        updated.left = 0;
+      if (left < 0) {
+        width += left;
+        left = 0;
       }
 
       // respect min height
-      if (updated.height < WinMinSize) {
+      if (height < WinMinSize) {
         if (offset.top) {
-          updated.top -= WinMinSize - updated.height;
+          top -= WinMinSize - height;
         }
-        updated.height = WinMinSize;
+        height = WinMinSize;
       }
 
       // respect min width
-      if (updated.width < WinMinSize) {
+      if (width < WinMinSize) {
         if (offset.left) {
-          updated.left -= WinMinSize - updated.width;
+          left -= WinMinSize - width;
         }
-        updated.width = WinMinSize;
+        width = WinMinSize;
       }
 
       // keep left side in the window
-      if (updated.left + updated.width > window.innerWidth) {
-        updated.width = window.innerWidth - updated.left;
+      if (left + width > window.innerWidth) {
+        width = window.innerWidth - left;
       }
 
       // keep bottom side in the window
-      if (updated.top + updated.height > window.innerHeight) {
-        updated.height = window.innerHeight - updated.top;
+      if (top + height > window.innerHeight) {
+        height = window.innerHeight - top;
       }
 
-      return updated;
+      const updated = {...props, top, left, width, height };
+
+      return arePropertiesEquals(props, updated) ? props : updated;
     });
   }, []);
 
@@ -140,8 +139,8 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
             height = WinMinSize;
           }
         }
-        const updated = props.top !== top || props.left !== left || props.width !== width || props.height !== height;
-        return updated ? {...props, top, left, width, height } : props;
+        const updated = {...props, top, left, width, height };
+        return arePropertiesEquals(props, updated) ? props : updated;
       });
     };
     
@@ -180,3 +179,8 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
     </StyledBox>
   );
 };
+
+function arePropertiesEquals<T extends Record<string, any>>(source: T, target: T): boolean {
+  const keys = Object.keys(source);
+  return Object.keys(target).length === keys.length && !keys.some(key => source[key] !== target[key]);
+}
