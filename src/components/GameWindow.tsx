@@ -4,6 +4,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import PeopleIcon from '@mui/icons-material/People';
 import HelpIcon from '@mui/icons-material/Help';
 import StarRateIcon from '@mui/icons-material/StarRate';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { ScrapedGame } from '../services/system.service';
@@ -40,6 +41,9 @@ const DetailsBox = ({ game, playVideo }: { game: IGame, playVideo?: () => void})
       </Typography>
       <Typography variant="body2" gutterBottom>
         <StarRateIcon /> { game.grade ?? '?' } / 20
+      </Typography>
+      <Typography variant="body2" gutterBottom>
+        <CalendarTodayIcon /> { game.date ?? '?'}
       </Typography>
       { playVideo && (
         <Typography variant="body2" gutterBottom sx={{ cursor: 'pointer', svg: {color: '#808080' }, '&:hover svg': { color: '#fff'} }} onClick={playVideo} >

@@ -5,11 +5,12 @@ export interface IMedia {
 }
 
 export interface IGame {
+  id: string;
   name: string;
   genres: string[];
   medias: IMedia[];
   synopsis: string;
   players: number;
   grade?: number;
-  id: string;
+  date?: string;
 }
