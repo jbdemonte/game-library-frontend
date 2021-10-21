@@ -1,10 +1,50 @@
 # Game Library (frontend)
 
-WIP
+This frontend is using [CRA](https://create-react-app.dev/), [React](https://reactjs.org/) and [MUI](https://mui.com/).
+
+## Links
+
+- [Backend](https://github.com/jbdemonte/game-library-backend)
+- [Online demo](https://jb.demonte.fr/demos/game-library/)
+- [dev.to article](https://dev.to/jbdemonte/create-a-window-manager-with-react-3mak)
+
+## Screenshot
+
+![screenshot](screenshot.png)
+
+## Development
+
+Copy `.env.example` to `.env` and modify it.
+
+Install the dependencies using `yarn` (or `npm`):
+
+```shell
+yarn 
+```
+
+Start the development server:
+
+```shell
+yarn start
+```
+
+## Production
+
+Build the project:
+
+```shell
+yarn build
+```
+
+It produces the `build` folder which contains the static files.
+
+The [backend](https://github.com/jbdemonte/game-library-backend) provides a docker build which automatically includes this frontend.
+
 
 ## Credits
 
-Consoles Icons from [OpenEmu](https://openemu.org/)
+- Consoles Icons from [OpenEmu](https://openemu.org/).
+- Medias from [Screenscraper](https://www.screenscraper.fr/).
 
 ## Licence
 
