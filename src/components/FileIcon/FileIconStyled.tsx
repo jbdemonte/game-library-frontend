@@ -59,8 +59,8 @@ type Props = {
   img?: string;
   sx?: SxProps<Theme>;
   onDoubleClick?: () => void;
-  onPointerEnter?: () => void;
-  onPointerLeave?: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 export function FileIconStyled({ icon, iconOutSize, iconSize }: BoxStyledProps) {

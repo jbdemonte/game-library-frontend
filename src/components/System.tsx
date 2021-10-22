@@ -14,7 +14,7 @@ export const System = ({ systemId }: Props) => {
 
   const [{ top, left }, setProperties] = useState({ top: 0, left: 0 });
 
-  const onDragMove = useCallback((e: PointerEvent) => {
+  const onDragMove = useCallback((e: MouseEvent) => {
     setProperties(props => ({ top: props.top + e.movementY, left: props.left + e.movementX }))
   }, []);
 

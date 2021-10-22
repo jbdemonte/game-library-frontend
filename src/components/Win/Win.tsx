@@ -106,9 +106,9 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
     setProperties(properties => ({ ...properties, fullscreen: !properties.fullscreen }));
   }, []);
 
-  const onPointerDown = useCallback(() => focus(), [focus]);
+  const onMouseDown = useCallback(() => focus(), [focus]);
 
-  const onDragMove = useCallback((e: PointerEvent) => {
+  const onDragMove = useCallback((e: MouseEvent) => {
     setProperties(properties => ({
       ...properties,
       top: minMax(0, properties.top + e.movementY, window.innerHeight - properties.height),
@@ -156,7 +156,7 @@ export const Win: FC<Props> = ({ img, title, footer: defaultFooter, children }) 
         onResize,
         onChange: setResizing,
         resizable: !fullscreen,
-        onPointerDown: onPointerDown,
+        onMouseDown,
       })}
     >
       <Header

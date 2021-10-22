@@ -1,36 +1,36 @@
-import { PointerEventHandler, useEffect, useMemo, useState } from 'react';
+import { MouseEventHandler, useEffect, useMemo, useState } from 'react';
 
 type Props = {
   draggable?: boolean;
-  onDragMove: (e: PointerEvent) => void;
+  onDragMove: (e: MouseEvent) => void;
 }
 
 export const useOnDrag = ({ onDragMove, draggable = true }: Props) => {
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
-    function onPointerMove(e: PointerEvent) {
+    function onMouseMove(e: MouseEvent) {
       if (isDragging && draggable) {
         onDragMove(e);
         e.preventDefault();
       }
     }
-    function onPointerUp() {
+    function onMouseUp() {
       setIsDragging(false);
     }
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
 
     return () => {
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
     };
   }, [isDragging, onDragMove, draggable]);
 
   return useMemo(() => {
-    const onPointerDown: PointerEventHandler = () => {
+    const onMouseDown: MouseEventHandler = () => {
       setIsDragging(true);
     };
-    return { onPointerDown };
+    return { onMouseDown };
   }, []);
 }

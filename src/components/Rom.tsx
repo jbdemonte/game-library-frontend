@@ -18,8 +18,8 @@ export const Rom = ({ rom }: Props) => {
     <Link href={rom.archive.url} style={{color: 'white', textDecoration: 'none'}}>
       <RomIcon
         label={rom.archive.name.replace(/\.[^.]+$/, '')}
-        onPointerEnter={() => setFooter('', rom.archive.name, formatFileSize(rom.archive.size))}
-        onPointerLeave={() => setFooter()}
+        onMouseEnter={() => setFooter('', rom.archive.name, formatFileSize(rom.archive.size))}
+        onMouseLeave={() => setFooter()}
       />
     </Link>
   );

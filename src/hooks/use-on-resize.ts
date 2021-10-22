@@ -1,16 +1,16 @@
-import React, { PointerEventHandler, useMemo, useState, useEffect } from 'react';
+import React, { MouseEventHandler, useMemo, useState, useEffect } from 'react';
 import { useEffectOnUpdate } from './use-effect-on-update';
 
 
 type Props = {
   onCursorChange: (cursor: string) => void;
-  onPointerDown?: (e: React.PointerEvent<HTMLElement>) => void;
+  onMouseDown?: (e: React.MouseEvent<HTMLElement>) => void;
   onResize: (offset: { top: number, left: number, bottom: number, right: number }) => void;
   onChange: (resizing: boolean) => void;
   resizable?: boolean;
 }
 
-export const useOnResize = ({ onCursorChange, onResize, onChange, resizable, onPointerDown: onPointerDownParent }: Props) => {
+export const useOnResize = ({ onCursorChange, onResize, onChange, resizable, onMouseDown: onMouseDownParent }: Props) => {
   const [, setCursor] = useState('auto');
   const [{ top, left, bottom, right, resizing }, setResizing] = useState({ top: false, left: false, bottom: false, right: false, resizing: false });
 
@@ -19,7 +19,7 @@ export const useOnResize = ({ onCursorChange, onResize, onChange, resizable, onP
   }, [resizing]);
 
   useEffect(() => {
-    function onPointerMove(e: PointerEvent) {
+    function onMouseMove(e: MouseEvent) {
       if (resizing && resizable) {
         onResize({
           top: top ? e.movementY : 0,
@@ -30,20 +30,20 @@ export const useOnResize = ({ onCursorChange, onResize, onChange, resizable, onP
         e.preventDefault();
       }
     }
-    function onPointerUp() {
+    function onMouseUp() {
       setResizing({ top: false, left: false, bottom: false, right: false, resizing: false });
     }
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
 
     return () => {
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
     };
   }, [resizing, top, left, bottom, right, onResize, resizable]);
 
   return useMemo(() => {
-    const onPointerMove: PointerEventHandler<HTMLElement> = (e: React.PointerEvent<HTMLElement>) => {
+    const onMouseMove: MouseEventHandler<HTMLElement> = (e: React.MouseEvent<HTMLElement>) => {
       const { top, left, bottom, right } = getActiveSides(e);
       const cursor = getCursor(top, right, bottom, left);
       setCursor(current => {
@@ -55,21 +55,21 @@ export const useOnResize = ({ onCursorChange, onResize, onChange, resizable, onP
 
     };
 
-    const onPointerDown: PointerEventHandler = (e: React.PointerEvent<HTMLElement>) => {
+    const onMouseDown: MouseEventHandler = (e: React.MouseEvent<HTMLElement>) => {
       const { top, left, bottom, right } = getActiveSides(e);
       if (top || left || bottom || right) {
         setResizing({ top, left, bottom, right, resizing: true });
       }
-      if (onPointerDownParent) {
-        onPointerDownParent(e);
+      if (onMouseDownParent) {
+        onMouseDownParent(e);
       }
     };
 
-    return resizable && !resizing ? { onPointerMove, onPointerDown } : {};
-  }, [onCursorChange, onPointerDownParent, resizable, resizing]);
+    return resizable && !resizing ? { onMouseMove, onMouseDown } : {};
+  }, [onCursorChange, onMouseDownParent, resizable, resizing]);
 }
 
-function getActiveSides(e: React.PointerEvent<HTMLElement>) {
+function getActiveSides(e: React.MouseEvent<HTMLElement>) {
   const size = 8;
   const element = e.currentTarget;
   const rect = element.getBoundingClientRect();
