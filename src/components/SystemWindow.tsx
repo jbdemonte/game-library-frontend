@@ -38,7 +38,13 @@ export const SystemWindow = ({ systemId }: SystemWindowData) => {
   useEffect(() => {
     systemService
       .getSystemContent(systemId)
-      .then(setContent)
+      .then(content => {
+
+        setContent({
+          scraped: content.scraped.sort((a, b) => a.game.name.toLowerCase() < b.game.name.toLowerCase() ? -1 : 1),
+          roms: content.roms.sort((a, b) => a.archive.name.toLowerCase() < b.archive.name.toLowerCase() ? -1 : 1),
+        })
+      })
       .catch(showError)
   }, [systemId, showError]);
 

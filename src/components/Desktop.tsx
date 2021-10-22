@@ -24,7 +24,9 @@ export const Desktop = () => {
   useEffect(() => {
     systemService
       .getStatuses()
-      .then(setStatuses)
+      .then(statuses => {
+        setStatuses(statuses.sort((a, b) => systemService.get(a.system).name.toLowerCase() < systemService.get(b.system).name.toLowerCase() ? -1 : 1));
+      })
       .catch(showError)
       .finally(() => setLoading(false));
   }, [showError]);
