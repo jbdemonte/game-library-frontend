@@ -1,6 +1,7 @@
-import { Box, styled } from '@mui/material';
+import { memo } from 'react';
+import { Box, styled, Typography } from '@mui/material';
 
-export const Footer = styled(Box)`
+export const StyledBox = styled(Box)`
   padding: 2px 10px;
   border-top: 1px solid #000;
   height: 30px;
@@ -31,3 +32,11 @@ export const Footer = styled(Box)`
     max-width: 25%;
   }
 `;
+
+export const Footer = memo(({ content }: { content?: [string, string, string]}) => {
+  return (
+    <StyledBox>
+      {content && content.map((value, index) => <Typography key={index} noWrap>{value}</Typography>) }
+    </StyledBox>
+  );
+});

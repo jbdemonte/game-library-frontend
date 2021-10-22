@@ -1,5 +1,5 @@
-import { FC, PointerEventHandler } from 'react';
-import { Box, styled } from '@mui/material';
+import { memo, PointerEventHandler } from 'react';
+import { Box, styled, Typography } from '@mui/material';
 import { FullscreenButton } from './buttons/FullscreenButton';
 import { CloseFullscreenButton } from './buttons/CloseFullscreenButton';
 import { CloseButton } from './buttons/CloseButton';
@@ -41,6 +41,8 @@ const StyledHeader = styled(Box)`
 `;
 
 type Props = {
+  img?: string;
+  title: string;
   fullscreen: boolean;
   onFullScreenClick: () => void;
   onDoubleClick: () => void;
@@ -48,10 +50,13 @@ type Props = {
   onPointerDown: PointerEventHandler;
 }
 
-export const Header: FC<Props> = ({ fullscreen, onFullScreenClick, onDoubleClick, onPointerDown, onCloseClick, children }) => {
+export const Header = memo(({ img, title, fullscreen, onFullScreenClick, onDoubleClick, onPointerDown, onCloseClick }: Props) => {
   return (
     <StyledHeader onDoubleClick={onDoubleClick} onPointerDown={onPointerDown}>
-      <div>{children}</div>
+      <div>
+        {Boolean(img) && <img src={img} alt={title} />}
+        <Typography noWrap>{title}</Typography>
+      </div>
       <div />
       <div>
         { !fullscreen && <FullscreenButton onClick={onFullScreenClick}/> }
@@ -60,4 +65,4 @@ export const Header: FC<Props> = ({ fullscreen, onFullScreenClick, onDoubleClick
       </div>
     </StyledHeader>
   );
-}
+});
