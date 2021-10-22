@@ -1,6 +1,7 @@
 import { ElementType, createElement } from 'react';
 import { Box, styled, Theme } from '@mui/material';
 import { SxProps } from '@mui/system';
+import { LazyImage } from '../LazyImage';
 
 type BoxStyledProps = {
   iconOutSize: number;
@@ -67,7 +68,7 @@ export function FileIconStyled({ icon, iconOutSize, iconSize }: BoxStyledProps) 
   return ({ img, label, ...props }: Props) => (
     <StyledBox {...props}>
       <div>
-        { Boolean(img) && <img src={img} alt={label} /> }
+        { img ? <LazyImage src={img} alt={label} size={iconSize} /> : null }
         { icon && createElement(icon) }
       </div>
       <p>{ label }</p>
