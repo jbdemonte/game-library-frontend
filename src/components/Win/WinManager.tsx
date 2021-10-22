@@ -27,7 +27,7 @@ export const WinManager: FC<Props> = ({ render, children }) => {
       }
 
       if (event.key === 'Escape') {
-        const updated = updateStateAndSetDescriptors(setDescriptors, { searching: false }, '', (descriptor) => descriptor.options.search && descriptor.state.searching );
+        const updated = updateStateAndSetDescriptors(setDescriptors, { searching: false, searched: '' }, '', (descriptor) => descriptor.options.search && descriptor.state.searching );
         if (!updated) {
           removeOneAndSetDescriptors(setDescriptors);
         }
